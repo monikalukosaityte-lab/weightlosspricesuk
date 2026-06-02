@@ -68,6 +68,7 @@ const BORDER = "#e2e6ef";
 export default function ProvidersTable({ providers, lastUpdated }: { providers: ProviderWithLogo[]; lastUpdated: string }) {
   const [currentDose, setCurrentDose] = useState<string>("2.5mg");
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+  const [allDosesSortKey, setAllDosesSortKey] = useState<DoseKey | null>(null);
 
   function toggleFilter(key: string) {
     setActiveFilters(prev => {
@@ -78,6 +79,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
   }
 
   const currentKey = DOSES.find(d => d.label === currentDose)?.key ?? null;
+  const isAllDoses = currentDose === "all";
 
   let rows = providers.filter(p => {
     if (currentKey && getPrice(p, currentKey) == null) return false;
@@ -89,15 +91,22 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
     return true;
   });
 
-  rows = [...rows].sort((a, b) => {
-    const aKey = currentKey ?? "price_2_5";
-    const bKey = currentKey ?? "price_2_5";
-    return (getPrice(a, aKey) ?? 9999) - (getPrice(b, bKey) ?? 9999);
-  });
+  if (isAllDoses && allDosesSortKey) {
+    rows = [...rows].sort((a, b) => (getPrice(a, allDosesSortKey) ?? 9999) - (getPrice(b, allDosesSortKey) ?? 9999));
+  } else {
+    rows = [...rows].sort((a, b) => {
+      const key = currentKey ?? "price_2_5";
+      return (getPrice(a, key) ?? 9999) - (getPrice(b, key) ?? 9999);
+    });
+  }
 
   const lowestPrice = currentKey && rows.length > 0 ? getPrice(rows[0], currentKey) : null;
 
-  const isAllDoses = currentDose === "all";
+  const lowestByDose: Partial<Record<DoseKey, number>> = {};
+  for (const d of DOSES) {
+    const vals = providers.map(p => getPrice(p, d.key)).filter((v): v is number => v != null);
+    if (vals.length) lowestByDose[d.key] = Math.min(...vals);
+  }
 
   return (
     <>
@@ -228,7 +237,19 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
             {isAllDoses ? (
               <div style={{ display: "grid", gridTemplateColumns: "160px repeat(6, 85px) 100px 55px 55px 90px", alignItems: "center", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
                 <div>Provider</div>
-                {DOSES.map(d => <div key={d.key} style={{ textAlign: "center", fontSize: "0.68rem" }}>{d.label}</div>)}
+                {DOSES.map(d => {
+                  const isActive = allDosesSortKey === d.key;
+                  return (
+                    <div
+                      key={d.key}
+                      onClick={() => setAllDosesSortKey(isActive ? null : d.key)}
+                      style={{ textAlign: "center", fontSize: "0.68rem", cursor: "pointer", padding: "4px 2px", borderRadius: 4, background: isActive ? "rgba(14,159,138,0.35)" : "transparent", color: isActive ? "#7de8d8" : "rgba(255,255,255,0.65)", transition: "background 0.15s", userSelect: "none" } as React.CSSProperties}
+                      title={`Sort by ${d.label}`}
+                    >
+                      {d.label}{isActive ? " ↑" : ""}
+                    </div>
+                  );
+                })}
                 <div>Rating</div>
                 <div style={{ textAlign: "center" }}>GPhC</div>
                 <div style={{ textAlign: "center" }}>CQC</div>
@@ -302,10 +323,15 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                     </div>
                     {DOSES.map(d => {
                       const price = getPrice(p, d.key);
+                      const isActiveCol = allDosesSortKey === d.key;
+                      const isLowestInCol = isActiveCol && price != null && price === lowestByDose[d.key];
                       return price != null ? (
-                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.82rem", fontWeight: 600, color: "#1a1f2e" }}>{fmtPrice(price)}</div>
+                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.82rem", fontWeight: isActiveCol ? 700 : 600, color: isLowestInCol ? TEAL : isActiveCol ? NAVY : "#1a1f2e", background: isActiveCol ? "rgba(15,31,61,0.04)" : "transparent", borderRadius: 4, padding: "2px 0" }}>
+                          {fmtPrice(price)}
+                          {isLowestInCol && <div style={{ fontSize: "0.55rem", fontWeight: 700, color: TEAL, textTransform: "uppercase", letterSpacing: "0.04em" }}>lowest</div>}
+                        </div>
                       ) : (
-                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", color: BORDER }}>—</div>
+                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", color: BORDER, background: isActiveCol ? "rgba(15,31,61,0.04)" : "transparent" }}>—</div>
                       );
                     })}
                     {ratingEl}
