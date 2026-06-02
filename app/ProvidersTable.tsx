@@ -222,7 +222,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
             borderRadius: 14,
             overflow: "hidden",
             boxShadow: "0 1px 3px rgba(15,31,61,0.07)",
-            minWidth: isAllDoses ? 1060 : 600,
+            minWidth: isAllDoses ? 1060 : 0,
           }}>
             {/* Header */}
             {isAllDoses ? (
@@ -235,14 +235,9 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                 <div />
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 80px 80px 80px 100px", alignItems: "center", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 <div>Provider</div>
                 <div>Price / mo</div>
-                <div>Rating</div>
-                <div style={{ textAlign: "center" }}>GPhC</div>
-                <div style={{ textAlign: "center" }}>CQC</div>
-                <div style={{ textAlign: "center" }}>Sub</div>
-                <div />
               </div>
             )}
 
@@ -327,31 +322,28 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
 
               const price = currentKey ? getPrice(p, currentKey) : null;
               return (
-                <div key={p.name} style={{ ...rowStyle, gridTemplateColumns: "2fr 1fr 1fr 80px 80px 80px 100px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div key={p.name} style={{ display: "flex", alignItems: "center", gap: 12, borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none", padding: "14px 20px" }}>
+                  {/* Provider */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
                     {logoEl}
-                    <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                         <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.88rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
                         {isLowest && <span style={{ fontSize: "0.62rem", fontWeight: 700, background: TEAL, color: "white", padding: "2px 6px", borderRadius: 10 }}>Lowest</span>}
                       </div>
-                      {tagsEl}
+                      <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap", alignItems: "center" }}>
+                        {tagsEl}
+                        {p.review_stars && <span style={{ fontSize: "0.72rem", color: MUTED }}>★ {p.review_stars.toFixed(1)}</span>}
+                      </div>
                     </div>
                   </div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 600, color: isLowest ? TEAL : "#1a1f2e" }}>
-                    {price != null ? fmtPrice(price) : <span style={{ color: BORDER, fontSize: "0.8rem" }}>—</span>}
+                  {/* Price + View */}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, flexShrink: 0 }}>
+                    <div style={{ fontSize: "1.05rem", fontWeight: 700, color: isLowest ? TEAL : NAVY }}>
+                      {price != null ? fmtPrice(price) : <span style={{ color: BORDER, fontSize: "0.85rem" }}>—</span>}
+                    </div>
+                    {viewBtn}
                   </div>
-                  {ratingEl}
-                  <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
-                    {p.gphc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
-                  </div>
-                  <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
-                    {p.cqc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
-                  </div>
-                  <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
-                    {p.subscription ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
-                  </div>
-                  {viewBtn}
                 </div>
               );
             })}
