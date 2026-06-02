@@ -225,6 +225,25 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
           </span>
         </div>
 
+        {/* Sort row — all doses only */}
+        {isAllDoses && (
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.04em" }}>Sort:</span>
+            {DOSES.map(d => {
+              const isActive = allDosesSortKey === d.key;
+              return (
+                <button
+                  key={d.key}
+                  onClick={() => setAllDosesSortKey(isActive ? null : d.key)}
+                  style={{ fontSize: "0.78rem", fontWeight: isActive ? 600 : 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid ${isActive ? "#b2e8e1" : BORDER}`, background: isActive ? "#e6f7f5" : "#ffffff", color: isActive ? TEAL : MUTED, cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit" }}
+                >
+                  {d.label}{isActive ? " ↑" : ""}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Table */}
         <div style={{ borderRadius: 14 }}>
           <div style={{
@@ -235,31 +254,10 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
             boxShadow: "0 1px 3px rgba(15,31,61,0.07)",
           }}>
             {/* Header */}
-            {isAllDoses ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
-                <div>Provider</div>
-                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                  <span style={{ fontSize: "0.65rem", opacity: 0.6 }}>tap dose to sort:</span>
-                  {DOSES.map(d => {
-                    const isActive = allDosesSortKey === d.key;
-                    return (
-                      <button
-                        key={d.key}
-                        onClick={() => setAllDosesSortKey(isActive ? null : d.key)}
-                        style={{ fontSize: "0.65rem", fontWeight: isActive ? 700 : 500, padding: "3px 7px", borderRadius: 10, border: `1px solid ${isActive ? "#7de8d8" : "rgba(255,255,255,0.2)"}`, background: isActive ? "rgba(14,159,138,0.35)" : "transparent", color: isActive ? "#7de8d8" : "rgba(255,255,255,0.65)", cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
-                      >
-                        {d.label}{isActive ? " ↑" : ""}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                <div>Provider</div>
-                <div>Price / mo</div>
-              </div>
-            )}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div>Provider</div>
+              {!isAllDoses && <div>Price / mo</div>}
+            </div>
 
             {/* Rows */}
             {rows.length === 0 ? (
