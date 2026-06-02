@@ -2,6 +2,9 @@ import { readFileSync, statSync } from "fs";
 import { join } from "path";
 import ProvidersTable, { type Provider } from "../ProvidersTable";
 import NavBar from "../NavBar";
+import Footer from "../Footer";
+
+const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
 
 const LOGOS: Record<string, string> = {
   "Asda": "Asda.png",
@@ -84,7 +87,7 @@ function loadProviders(): (Provider & { logo: string | null })[] {
   }));
 }
 
-export default function Home() {
+export default function MounjaroPage() {
   const providers = loadProviders();
   const withPrice = providers.filter((p) => p.price_2_5 != null);
   const cheapest2_5 = Math.min(...withPrice.map((p) => p.price_2_5!));
@@ -92,46 +95,45 @@ export default function Home() {
     .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
   return (
-    <div className="min-h-screen bg-[#F4F8FD]">
-      <NavBar badge={`Updated ${lastUpdated} · ${providers.length} providers`} />
+    <div style={{ minHeight: "100vh", background: "#f8f9fb", display: "flex", flexDirection: "column" }}>
+      <NavBar />
 
       {/* Hero */}
-      <section className="bg-[#2F7FD4] text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-3xl font-bold mb-3">Compare Weight Loss Medication Prices in the UK</h1>
-          <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-            See how Mounjaro (tirzepatide) prices compare across UK-registered online providers.
+      <section style={{ background: "linear-gradient(160deg, #0f1f3d 0%, #1a3260 60%, #1e4d8c 100%)", color: "white", padding: "56px 24px 64px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 80% 50%, rgba(14,159,138,0.18) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: 1140, margin: "0 auto", position: "relative" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(14,159,138,0.18)", border: "1px solid rgba(14,159,138,0.35)", color: "#7de8d8", fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
+            Mounjaro · tirzepatide
+          </div>
+          <h1 style={{ fontFamily: SERIF, fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 400, lineHeight: 1.2, maxWidth: 580, marginBottom: 16 }}>
+            Compare Mounjaro prices <span style={{ color: "#7de8d8" }}>across the UK</span>
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", maxWidth: 520, lineHeight: 1.6, marginBottom: 36 }}>
+            See what {providers.length} UK-registered providers are charging across all doses &ndash; updated daily.
           </p>
-          <div className="mt-6 inline-flex items-center gap-2 bg-[#2571bc] rounded-full px-5 py-2.5 text-sm font-medium">
-            <span>💡</span>
-            <span>2.5mg prices start from <strong>£{cheapest2_5}</strong>/mo</span>
+          <div style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <strong style={{ fontSize: "1.55rem", fontWeight: 600, color: "white", lineHeight: 1 }}>{providers.length}</strong>
+              <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Providers</span>
+            </div>
+            <div style={{ width: 1, background: "rgba(255,255,255,0.15)", height: 40, alignSelf: "center" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <strong style={{ fontSize: "1.55rem", fontWeight: 600, color: "white", lineHeight: 1 }}>£{cheapest2_5}</strong>
+              <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Lowest 2.5mg</span>
+            </div>
+            <div style={{ width: 1, background: "rgba(255,255,255,0.15)", height: 40, alignSelf: "center" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <strong style={{ fontSize: "1.1rem", fontWeight: 600, color: "white", lineHeight: 1 }}>{lastUpdated}</strong>
+              <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Last updated</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats bar */}
-      <div className="max-w-7xl mx-auto px-4 mt-6 mb-2">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold" style={{ color: '#2F7FD4' }}>{providers.length}</div>
-            <div className="text-xs text-gray-500 mt-1">Providers</div>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold" style={{ color: '#2F7FD4' }}>£{cheapest2_5}</div>
-            <div className="text-xs text-gray-500 mt-1">Lowest 2.5mg</div>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
-            <div className="text-lg font-bold" style={{ color: '#2F7FD4' }}>{lastUpdated}</div>
-            <div className="text-xs text-gray-500 mt-1">Last updated</div>
-          </div>
-        </div>
-      </div>
-
       {/* Table */}
-      <div className="max-w-7xl mx-auto px-4 mt-6 mb-16">
+      <div style={{ maxWidth: 1140, margin: "0 auto", padding: "32px 24px 0", width: "100%" }}>
         <ProvidersTable providers={providers} />
-
-        <p className="text-xs text-gray-400 mt-4 leading-relaxed">
+        <p style={{ fontSize: "0.75rem", color: "#9ca3af", marginTop: 16, lineHeight: 1.6 }}>
           Prices shown are collected from publicly available information and are for indicative purposes only.
           They may be out of date, incomplete, or subject to change without notice. We do not guarantee the
           accuracy of any pricing listed. Always visit the provider&apos;s website directly to confirm current
@@ -141,37 +143,29 @@ export default function Home() {
       </div>
 
       {/* Info cards */}
-      <section className="max-w-7xl mx-auto px-4 mb-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-bold text-gray-900 mb-2">What is Mounjaro?</h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Mounjaro (tirzepatide) is a weekly injection approved in the UK for weight management.
-            It works by mimicking two hormones that regulate appetite and blood sugar.
-          </p>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-bold text-gray-900 mb-2">How do I choose a provider?</h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Look for GPhC-registered pharmacies or CQC-registered clinics. Compare price, delivery
-            speed, and support options. Always confirm eligibility directly with the provider.
-          </p>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-bold text-gray-900 mb-2">Is it safe to buy online?</h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Yes, if the provider is registered with the CQC and their prescribers are
-            GMC-registered. All providers listed here are GPhC-registered pharmacies or
-            CQC-registered clinics.
-          </p>
-        </div>
+      <section style={{ maxWidth: 1140, margin: "32px auto 64px", padding: "0 24px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20, width: "100%" }}>
+        {[
+          {
+            title: "What is Mounjaro?",
+            body: "Mounjaro (tirzepatide) is a weekly injection approved in the UK for weight management. It works by mimicking two hormones that regulate appetite and blood sugar.",
+          },
+          {
+            title: "How do I choose a provider?",
+            body: "Look for GPhC-registered pharmacies or CQC-registered clinics. Compare price, delivery speed, and support options. Always confirm eligibility directly with the provider.",
+          },
+          {
+            title: "Is it safe to buy online?",
+            body: "Yes, if the provider is registered with the CQC and their prescribers are GMC-registered. All providers listed here are GPhC-registered pharmacies or CQC-registered clinics.",
+          },
+        ].map(card => (
+          <div key={card.title} style={{ background: "#fff", border: "1.5px solid #e2e6ef", borderRadius: 14, padding: 24, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
+            <h2 style={{ fontFamily: SERIF, fontSize: "1.05rem", fontWeight: 400, color: "#0f1f3d", marginBottom: 10 }}>{card.title}</h2>
+            <p style={{ fontSize: "0.85rem", color: "#6b7280", lineHeight: 1.65, margin: 0 }}>{card.body}</p>
+          </div>
+        ))}
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#0D2D4F] py-6 px-4 text-center text-xs mt-auto" style={{ borderTop: "1px solid #1a3a5c" }}>
-        <span style={{ color: "#7AABCE" }}>WeightLossPricesUK.co.uk — For informational purposes only. Not medical advice. Always consult a qualified healthcare professional.</span>
-        <span style={{ color: "#1a3a5c" }} className="mx-2">·</span>
-        <a href="/privacy" style={{ color: "#7AABCE" }} className="underline hover:text-white transition-colors">Privacy Policy</a>
-      </footer>
+      <Footer />
     </div>
   );
 }

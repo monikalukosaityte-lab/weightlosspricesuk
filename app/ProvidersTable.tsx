@@ -86,7 +86,7 @@ function Bool({ val }: { val: boolean | null }) {
 
 function CqcBadge({ registered, rating }: { registered: boolean | null; rating: string | null }) {
   if (!registered && !rating) return <span style={{ color: '#D1D5DB' }}>—</span>;
-  if (rating === "Outstanding")          return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#E8F2FC', color: '#2F7FD4' }}>Outstanding</span>;
+  if (rating === "Outstanding")          return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#e6f7f5', color: '#0e9f8a' }}>Outstanding</span>;
   if (rating === "Good")                 return <span className="font-medium" style={{ color: '#1A7A4A' }} title="CQC Good">✓</span>;
   if (rating === "Requires Improvement") return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#F3F4F6', color: '#6B7280' }}>Req. Improv.</span>;
   if (rating === "Inadequate")           return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#F3F4F6', color: '#6B7280' }}>Inadequate</span>;
@@ -171,7 +171,7 @@ export default function ProvidersTable({ providers }: { providers: ProviderWithL
                     fontSize: '11px',
                     padding: '2px 8px',
                     ...(active
-                      ? { backgroundColor: '#0D2D4F', color: '#ffffff', borderColor: '#0D2D4F' }
+                      ? { backgroundColor: '#0e9f8a', color: '#ffffff', borderColor: '#0e9f8a' }
                       : { backgroundColor: '#ffffff', color: '#6B7280', borderColor: '#E5E7EB' })
                   }}
                 >
@@ -202,8 +202,8 @@ export default function ProvidersTable({ providers }: { providers: ProviderWithL
               onClick={() => setSortDose(d.key)}
               className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors border ${
                 sortDose === d.key
-                  ? "bg-[#2F7FD4] text-white border-[#2F7FD4]"
-                  : "bg-white text-gray-600 border-gray-200 hover:bg-[#E8F2FC]"
+                  ? "bg-[#0e9f8a] text-white border-[#0e9f8a]"
+                  : "bg-white text-gray-600 border-gray-200 hover:bg-[#e6f7f5]"
               }`}
             >
               {d.label}
@@ -219,42 +219,42 @@ export default function ProvidersTable({ providers }: { providers: ProviderWithL
       <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
         <table className="text-xs md:text-sm" style={{ borderCollapse: "collapse", minWidth: "900px" }}>
           <thead>
-            <tr className="bg-[#0D2D4F] border-b border-[#1a3a5c] text-xs text-blue-200 uppercase tracking-wider">
-              <th className="sticky left-0 z-20 bg-[#0D2D4F] text-left px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]" style={{ width: '110px', maxWidth: '110px' }}></th>
-              <th colSpan={6} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]">Prices / monthly pack</th>
-              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]">Reviews</th>
-              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]">Provider Details</th>
-              <th colSpan={3} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]">Plans</th>
-              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]">Payments</th>
-              <th className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3a5c]">Discounts</th>
-              <th className="px-2 py-2 md:px-4 md:py-3 bg-[#0D2D4F]"></th>
+            <tr className="bg-[#0f1f3d] border-b border-[#1a3260] text-xs text-blue-200 uppercase tracking-wider">
+              <th className="sticky left-0 z-20 bg-[#0f1f3d] text-left px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]" style={{ width: '110px', maxWidth: '110px' }}></th>
+              <th colSpan={6} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Prices / monthly pack</th>
+              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Reviews</th>
+              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Provider Details</th>
+              <th colSpan={3} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Plans</th>
+              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Payments</th>
+              <th className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Discounts</th>
+              <th className="px-2 py-2 md:px-4 md:py-3 bg-[#0f1f3d]"></th>
             </tr>
-            <tr className="border-b border-[#1a3a5c] text-xs text-white bg-[#0D2D4F]">
-              <th className={`sticky left-0 top-0 z-30 bg-[#0D2D4F] border-r border-[#1a3a5c] px-2 py-1.5 md:px-4 md:py-2.5 text-left font-semibold text-white ${stickyColShadow}`} style={{ width: '110px', maxWidth: '110px' }}>
+            <tr className="border-b border-[#1a3260] text-xs text-white bg-[#0f1f3d]">
+              <th className={`sticky left-0 top-0 z-30 bg-[#0f1f3d] border-r border-[#1a3260] px-2 py-1.5 md:px-4 md:py-2.5 text-left font-semibold text-white ${stickyColShadow}`} style={{ width: '110px', maxWidth: '110px' }}>
                 Provider
               </th>
               {DOSES.map(d => (
                 <th
                   key={d.key}
                   onClick={() => setSortDose(d.key)}
-                  className={`sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white cursor-pointer hover:bg-[#0D2D4F] transition-colors whitespace-nowrap ${
+                  className={`sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white cursor-pointer hover:bg-[#0f1f3d] transition-colors whitespace-nowrap ${
                     sortDose === d.key ? "underline decoration-dotted" : ""
                   }`}
                 >
                   {d.label} {sortDose === d.key ? "↑" : ""}
                 </th>
               ))}
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white border-l border-[#1a3a5c]">Stars</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white border-r border-[#1a3a5c]">Reviews</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white">GPhC</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white border-r border-[#1a3a5c]">CQC</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white">Sub</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white">Bundles</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white border-r border-[#1a3a5c]">Longer Plans</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white">Klarna</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white border-r border-[#1a3a5c]">PayPal</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0D2D4F] text-white border-r border-[#1a3a5c]">Code / offer</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 bg-[#0D2D4F]"></th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-l border-[#1a3260]">Stars</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">Reviews</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">GPhC</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">CQC</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">Sub</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">Bundles</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">Longer Plans</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">Klarna</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">PayPal</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">Code / offer</th>
+              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 bg-[#0f1f3d]"></th>
             </tr>
           </thead>
           <tbody>
@@ -284,13 +284,13 @@ export default function ProvidersTable({ providers }: { providers: ProviderWithL
                       <div className="min-w-0">
                         <div className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2">
                           {p.url
-                            ? <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#2F7FD4]">{p.name}</a>
+                            ? <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#0e9f8a]">{p.name}</a>
                             : <span>{p.name}</span>
                           }
                         </div>
                         {isCheapest && (
                           <div className="mt-0.5">
-                            <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap border border-gray-200">Lowest</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap border" style={{ background: '#e6f7f5', color: '#0e9f8a', borderColor: '#b2e8e1' }}>Lowest</span>
                           </div>
                         )}
                       </div>
@@ -318,7 +318,7 @@ export default function ProvidersTable({ providers }: { providers: ProviderWithL
                   <td className="px-2 py-2 md:px-4 md:py-3 text-center border-r border-gray-100 whitespace-nowrap">
                     {p.review_count != null ? (
                       p.trustpilot_url
-                        ? <a href={p.trustpilot_url} target="_blank" rel="noopener noreferrer" className="text-gray-700 underline decoration-dotted hover:text-[#2F7FD4]">{p.review_count.toLocaleString()}</a>
+                        ? <a href={p.trustpilot_url} target="_blank" rel="noopener noreferrer" className="text-gray-700 underline decoration-dotted hover:text-[#0e9f8a]">{p.review_count.toLocaleString()}</a>
                         : <span className="text-gray-700">{p.review_count.toLocaleString()}</span>
                     ) : <span className="text-gray-300">—</span>}
                   </td>
@@ -355,7 +355,7 @@ export default function ProvidersTable({ providers }: { providers: ProviderWithL
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors border"
-                        style={{ backgroundColor: 'white', color: '#0D2D4F', borderColor: '#d1d5db' }}
+                        style={{ backgroundColor: 'white', color: '#0f1f3d', borderColor: '#d1d5db' }}
                       >
                         View →
                       </a>

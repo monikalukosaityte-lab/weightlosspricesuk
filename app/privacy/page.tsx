@@ -1,148 +1,124 @@
 import NavBar from "../NavBar";
+import Footer from "../Footer";
+
+const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#F4F8FD]">
-      <NavBar maxWidth="max-w-3xl" />
+    <div style={{ minHeight: "100vh", background: "#f8f9fb", display: "flex", flexDirection: "column" }}>
+      <NavBar />
 
-      <div className="max-w-3xl mx-auto px-4 py-10">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Privacy Policy</h1>
-        <p className="text-sm text-gray-400 mb-10">Last updated: 31 May 2026</p>
+      <main style={{ maxWidth: 860, margin: "0 auto", padding: "48px 24px 80px", flex: 1, width: "100%" }}>
+        <div style={{ marginBottom: 40, paddingBottom: 24, borderBottom: "1px solid #e2e6ef" }}>
+          <h1 style={{ fontFamily: SERIF, fontSize: "2rem", fontWeight: 400, color: "#0f1f3d", marginBottom: 8 }}>Privacy Policy</h1>
+          <p style={{ fontSize: "0.85rem", color: "#6b7280", margin: 0 }}>Last updated: June 2026</p>
+        </div>
 
-        <div className="space-y-8 text-sm text-gray-700 leading-relaxed">
+        <div style={{ background: "#e6f7f5", borderLeft: "4px solid #0e9f8a", padding: "16px 20px", marginBottom: 32 }}>
+          <p style={{ fontSize: "0.85rem", color: "#0a6b5a", margin: 0, lineHeight: 1.6 }}>
+            This policy explains what information we collect when you visit WeightLossPricesUK.co.uk, how we use it, and your rights under UK data protection law (UK GDPR).
+          </p>
+        </div>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">1. Who we are</h2>
-            <p>
-              WeightLossPricesUK operates the website <strong>weightlosspricesuk.co.uk</strong> — a free price comparison
-              tool for weight loss medication providers in the UK. We are not a clinic, pharmacy, or medication provider.
-            </p>
-            <p className="mt-2">
-              For any privacy-related queries, contact us at:{" "}
-              <a href="mailto:contact@weightlosspricesuk.co.uk" className="underline text-gray-900">
-                contact@weightlosspricesuk.co.uk
-              </a>
-            </p>
-          </section>
+        <div style={{ fontSize: "0.9rem", color: "#6b7280", lineHeight: 1.75 }}>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">2. What data we collect</h2>
-            <p className="mb-3">We only collect data you provide voluntarily via the contact form:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>First and last name</li>
-              <li>Email address</li>
-              <li>Reason for contact</li>
-              <li>Message content</li>
-            </ul>
-            <p className="mt-3">
-              We do not use cookies, tracking pixels, or analytics tools. We do not collect any health or medical data.
-            </p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>1. Who we are</h2>
+          <p style={{ marginBottom: 14 }}>
+            WeightLossPricesUK is an independent price comparison website for weight loss medications available through UK-registered online providers. We are based in the United Kingdom.
+          </p>
+          <p style={{ marginBottom: 14 }}>
+            For any privacy-related queries, contact us at:{" "}
+            <a href="mailto:contact@weightlosspricesuk.co.uk" style={{ color: "#0e9f8a" }}>contact@weightlosspricesuk.co.uk</a>
+          </p>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">3. Why we collect it</h2>
-            <p>
-              Your contact form data is used solely to respond to your message. We do not use it for marketing,
-              profiling, or any other purpose.
-            </p>
-            <p className="mt-2">
-              The lawful basis for processing is <strong>legitimate interests</strong> (responding to direct
-              enquiries you have initiated).
-            </p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>2. What data we collect</h2>
+          <p style={{ marginBottom: 12 }}>We only collect data you provide voluntarily via the contact form:</p>
+          <ul style={{ paddingLeft: 20, marginBottom: 14 }}>
+            {["First and last name", "Email address", "Reason for contact", "Message content"].map(item => (
+              <li key={item} style={{ marginBottom: 6 }}>{item}</li>
+            ))}
+          </ul>
+          <p style={{ marginBottom: 14 }}>
+            We do not use cookies, tracking pixels, or analytics tools. We do not collect any health or medical data.
+          </p>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">4. How long we keep your data</h2>
-            <p>
-              Contact form submissions are delivered to our email inbox and retained only as long as necessary
-              to resolve your enquiry. We do not maintain a separate database of contact form submissions.
-            </p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>3. Why we collect it</h2>
+          <p style={{ marginBottom: 12 }}>
+            Your contact form data is used solely to respond to your message. We do not use it for marketing, profiling, or any other purpose.
+          </p>
+          <p style={{ marginBottom: 14 }}>
+            The lawful basis for processing is <strong>legitimate interests</strong> (responding to direct enquiries you have initiated).
+          </p>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">5. Third parties</h2>
-            <p className="mb-3">Your data passes through the following third-party services:</p>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-800">Service</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-800">Purpose</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-800">Privacy policy</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-gray-100">
-                    <td className="px-4 py-3 font-medium">Vercel</td>
-                    <td className="px-4 py-3 text-gray-600">Website hosting</td>
-                    <td className="px-4 py-3">
-                      <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="underline">
-                        vercel.com
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3 font-medium">Zoho Mail</td>
-                    <td className="px-4 py-3 text-gray-600">Email delivery</td>
-                    <td className="px-4 py-3">
-                      <a href="https://www.zoho.com/privacy.html" target="_blank" rel="noopener noreferrer" className="underline">
-                        zoho.com
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p className="mt-3">We do not sell, rent, or share your personal data with any other third parties.</p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>4. How long we keep your data</h2>
+          <p style={{ marginBottom: 14 }}>
+            Contact form submissions are delivered to our email inbox and retained only as long as necessary to resolve your enquiry. We do not maintain a separate database of contact form submissions.
+          </p>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">6. Your rights (UK GDPR)</h2>
-            <p className="mb-3">Under UK GDPR you have the right to:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><strong>Access</strong> — request a copy of the data we hold about you</li>
-              <li><strong>Erasure</strong> — ask us to delete your data</li>
-              <li><strong>Rectification</strong> — ask us to correct inaccurate data</li>
-              <li><strong>Restriction</strong> — ask us to limit how we use your data</li>
-              <li><strong>Object</strong> — object to our processing</li>
-            </ul>
-            <p className="mt-3">
-              To exercise any of these rights, email{" "}
-              <a href="mailto:contact@weightlosspricesuk.co.uk" className="underline text-gray-900">
-                contact@weightlosspricesuk.co.uk
-              </a>. We will respond within 2–3 working days.
-            </p>
-            <p className="mt-2">
-              You also have the right to lodge a complaint with the UK&apos;s data protection authority:{" "}
-              <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" className="underline">
-                ico.org.uk
-              </a>.
-            </p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>5. Third parties</h2>
+          <p style={{ marginBottom: 12 }}>Your data passes through the following third-party services:</p>
+          <div style={{ background: "#fff", border: "1.5px solid #e2e6ef", borderRadius: 8, overflow: "hidden", marginBottom: 14 }}>
+            <table style={{ width: "100%", fontSize: "0.9rem", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #e2e6ef" }}>
+                  <th style={{ textAlign: "left", padding: "12px 16px", fontWeight: 600, color: "#1a1f2e" }}>Service</th>
+                  <th style={{ textAlign: "left", padding: "12px 16px", fontWeight: 600, color: "#1a1f2e" }}>Purpose</th>
+                  <th style={{ textAlign: "left", padding: "12px 16px", fontWeight: 600, color: "#1a1f2e" }}>Privacy policy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: "1px solid #e2e6ef" }}>
+                  <td style={{ padding: "12px 16px", fontWeight: 500, color: "#1a1f2e" }}>Vercel</td>
+                  <td style={{ padding: "12px 16px" }}>Website hosting</td>
+                  <td style={{ padding: "12px 16px" }}><a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: "#0e9f8a" }}>vercel.com</a></td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "12px 16px", fontWeight: 500, color: "#1a1f2e" }}>Zoho Mail</td>
+                  <td style={{ padding: "12px 16px" }}>Email delivery</td>
+                  <td style={{ padding: "12px 16px" }}><a href="https://www.zoho.com/privacy.html" target="_blank" rel="noopener noreferrer" style={{ color: "#0e9f8a" }}>zoho.com</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style={{ marginBottom: 14 }}>We do not sell, rent, or share your personal data with any other third parties.</p>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">7. External links</h2>
-            <p>
-              This website contains links to third-party provider websites. We are not responsible for their
-              content or privacy practices. Please review each provider&apos;s privacy policy before submitting
-              any personal data to them.
-            </p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>6. Your rights (UK GDPR)</h2>
+          <p style={{ marginBottom: 12 }}>Under UK GDPR you have the right to:</p>
+          <ul style={{ paddingLeft: 20, marginBottom: 14 }}>
+            {[
+              ["Access", "request a copy of the data we hold about you"],
+              ["Erasure", "ask us to delete your data"],
+              ["Rectification", "ask us to correct inaccurate data"],
+              ["Restriction", "ask us to limit how we use your data"],
+              ["Object", "object to our processing"],
+            ].map(([term, desc]) => (
+              <li key={term} style={{ marginBottom: 6 }}><strong>{term}</strong> &ndash; {desc}</li>
+            ))}
+          </ul>
+          <p style={{ marginBottom: 12 }}>
+            To exercise any of these rights, email{" "}
+            <a href="mailto:contact@weightlosspricesuk.co.uk" style={{ color: "#0e9f8a" }}>contact@weightlosspricesuk.co.uk</a>.
+            We will respond within 2&ndash;3 working days.
+          </p>
+          <p style={{ marginBottom: 14 }}>
+            You also have the right to lodge a complaint with the UK&apos;s data protection authority:{" "}
+            <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" style={{ color: "#0e9f8a" }}>ico.org.uk</a>.
+          </p>
 
-          <section>
-            <h2 className="font-semibold text-gray-900 text-base mb-2">8. Changes to this policy</h2>
-            <p>
-              We may update this policy from time to time. The date at the top of this page will always reflect
-              the most recent version.
-            </p>
-          </section>
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>7. External links</h2>
+          <p style={{ marginBottom: 14 }}>
+            This website contains links to third-party provider websites. We are not responsible for their content or privacy practices. Please review each provider&apos;s privacy policy before submitting any personal data to them.
+          </p>
+
+          <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>8. Changes to this policy</h2>
+          <p style={{ marginBottom: 14 }}>
+            We may update this policy from time to time. The date at the top of this page will always reflect the most recent version.
+          </p>
 
         </div>
-      </div>
+      </main>
 
-      <footer style={{ backgroundColor: "#0D2D4F", borderTop: "1px solid #1a3a5c" }} className="py-6 px-4 text-center text-xs mt-10">
-        <span style={{ color: "#7AABCE" }}>WeightLossPricesUK.co.uk — For informational purposes only. Not medical advice.</span>
-      </footer>
+      <Footer />
     </div>
   );
 }
