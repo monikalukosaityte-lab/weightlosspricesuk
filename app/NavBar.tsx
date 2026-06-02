@@ -45,7 +45,6 @@ export default function NavBar() {
 
         {/* Desktop nav */}
         <nav className="hidden sm:flex" style={{ alignItems: "center", gap: 2, marginLeft: "auto" }}>
-          <a href="/" style={navLinkStyle("/")}>Home</a>
           <a href="/mounjaro" style={{ ...navLinkStyle("/mounjaro"), display: "flex", alignItems: "center", gap: 5 }}>
             Mounjaro
             <span style={{ fontSize: "0.62rem", fontWeight: 600, letterSpacing: "0.04em", padding: "1px 6px", borderRadius: 10, background: "#e6f7f5", color: "#0e9f8a", border: "1px solid #b2e8e1" }}>Live</span>
@@ -75,7 +74,7 @@ export default function NavBar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="sm:hidden" style={{ borderTop: "1px solid #e2e6ef", background: "#fff", padding: "12px 20px 20px", display: "flex", flexDirection: "column", gap: 4 }}>
-          {([["Home", "/"], ["Mounjaro", "/mounjaro"], ["About", "/about"]] as const).map(([label, href]) => (
+          {([["Mounjaro", "/mounjaro"], ["About", "/about"]] as const).map(([label, href]) => (
             <a
               key={href}
               href={href}
