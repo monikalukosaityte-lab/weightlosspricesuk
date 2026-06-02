@@ -112,9 +112,9 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
     <>
       {/* Sticky dose bar */}
       <div style={{ background: "#ffffff", borderBottom: `1px solid ${BORDER}`, position: "sticky", top: 64, zIndex: 150, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 24px", height: 52, display: "flex", alignItems: "center", gap: 16, overflowX: "auto", scrollbarWidth: "none" } as React.CSSProperties}>
-          <span style={{ fontSize: "0.78rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap", flexShrink: 0 }}>Your dose:</span>
-          <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "10px 24px", display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.78rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>Your dose:</span>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {["all", ...DOSES.map(d => d.label)].map(dose => {
               const active = currentDose === dose;
               return (
@@ -140,10 +140,6 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
               );
             })}
           </div>
-          <div style={{ width: 1, height: 24, background: BORDER, flexShrink: 0 }} />
-          <span style={{ fontSize: "0.8rem", color: MUTED, whiteSpace: "nowrap", flexShrink: 0 }}>
-            Showing prices for <strong>{currentDose === "all" ? "all doses" : currentDose}</strong>
-          </span>
         </div>
       </div>
 
@@ -167,8 +163,8 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         </div>
 
         {/* Filters */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, overflowX: "auto", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.04em", flexShrink: 0 }}>Filter:</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.75rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.04em" }}>Filter:</span>
           {[
             { key: "cqc", label: "CQC registered" },
             { key: "sub", label: "Subscription" },
@@ -192,8 +188,6 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                   cursor: "pointer",
                   transition: "all 0.15s",
                   fontFamily: "inherit",
-                  flexShrink: 0,
-                  whiteSpace: "nowrap",
                 }}
               >
                 {f.label}
@@ -205,7 +199,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
               <div style={{ width: 1, height: 18, background: BORDER }} />
               <button
                 onClick={() => setCurrentDose("all")}
-                style={{ fontSize: "0.78rem", fontWeight: 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid ${BORDER}`, background: "#ffffff", color: MUTED, cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit", flexShrink: 0, whiteSpace: "nowrap" }}
+                style={{ fontSize: "0.78rem", fontWeight: 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid ${BORDER}`, background: "#ffffff", color: MUTED, cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit" }}
               >
                 All doses →
               </button>
@@ -214,7 +208,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
           <div style={{ width: 1, height: 18, background: BORDER }} />
           <button
             onClick={() => setActiveFilters(new Set())}
-            style={{ fontSize: "0.75rem", color: MUTED, background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6, fontFamily: "inherit", flexShrink: 0, whiteSpace: "nowrap" }}
+            style={{ fontSize: "0.75rem", color: MUTED, background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6, fontFamily: "inherit" }}
           >
             Clear all
           </button>
@@ -232,41 +226,33 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         </div>
 
         {/* Table */}
-        <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", borderRadius: 14 } as React.CSSProperties}>
-          {isAllDoses && (
-            <div style={{ fontSize: "0.75rem", color: MUTED, textAlign: "center", padding: "6px 0 8px", letterSpacing: "0.03em" }}>
-              ← Swipe to see all doses →
-            </div>
-          )}
+        <div style={{ borderRadius: 14 }}>
           <div style={{
             background: "#ffffff",
             border: `1.5px solid ${BORDER}`,
             borderRadius: 14,
             overflow: "hidden",
             boxShadow: "0 1px 3px rgba(15,31,61,0.07)",
-            minWidth: isAllDoses ? 1060 : 0,
           }}>
             {/* Header */}
             {isAllDoses ? (
-              <div style={{ display: "grid", gridTemplateColumns: "160px repeat(6, 85px) 100px 55px 55px 90px", alignItems: "center", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
                 <div>Provider</div>
-                {DOSES.map(d => {
-                  const isActive = allDosesSortKey === d.key;
-                  return (
-                    <div
-                      key={d.key}
-                      onClick={() => setAllDosesSortKey(isActive ? null : d.key)}
-                      style={{ textAlign: "center", fontSize: "0.68rem", cursor: "pointer", padding: "4px 2px", borderRadius: 4, background: isActive ? "rgba(14,159,138,0.35)" : "transparent", color: isActive ? "#7de8d8" : "rgba(255,255,255,0.65)", transition: "background 0.15s", userSelect: "none" } as React.CSSProperties}
-                      title={`Sort by ${d.label}`}
-                    >
-                      {d.label}{isActive ? " ↑" : ""}
-                    </div>
-                  );
-                })}
-                <div>Rating</div>
-                <div style={{ textAlign: "center" }}>GPhC</div>
-                <div style={{ textAlign: "center" }}>CQC</div>
-                <div />
+                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                  <span style={{ fontSize: "0.65rem", opacity: 0.6 }}>tap dose to sort:</span>
+                  {DOSES.map(d => {
+                    const isActive = allDosesSortKey === d.key;
+                    return (
+                      <button
+                        key={d.key}
+                        onClick={() => setAllDosesSortKey(isActive ? null : d.key)}
+                        style={{ fontSize: "0.65rem", fontWeight: isActive ? 700 : 500, padding: "3px 7px", borderRadius: 10, border: `1px solid ${isActive ? "#7de8d8" : "rgba(255,255,255,0.2)"}`, background: isActive ? "rgba(14,159,138,0.35)" : "transparent", color: isActive ? "#7de8d8" : "rgba(255,255,255,0.65)", cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
+                      >
+                        {d.label}{isActive ? " ↑" : ""}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -326,35 +312,34 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
 
               if (isAllDoses) {
                 return (
-                  <div key={p.name} style={{ ...rowStyle, gridTemplateColumns: "160px repeat(6, 85px) 100px 55px 55px 90px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      {logoEl}
-                      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                        <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.82rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
-                        {tagsEl}
+                  <div key={p.name} style={{ display: "flex", alignItems: "flex-start", gap: 12, borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none", padding: "14px 20px" }}>
+                    {logoEl}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+                        <div>
+                          <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.88rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
+                          <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap", alignItems: "center" }}>
+                            {tagsEl}
+                            {p.review_stars && <span style={{ fontSize: "0.72rem", color: MUTED }}>★ {p.review_stars.toFixed(1)}</span>}
+                          </div>
+                        </div>
+                        {viewBtn}
+                      </div>
+                      <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+                        {DOSES.map(d => {
+                          const price = getPrice(p, d.key);
+                          if (price == null) return null;
+                          const isActiveCol = allDosesSortKey === d.key;
+                          const isLowestInCol = price === lowestByDose[d.key];
+                          return (
+                            <div key={d.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "4px 8px", borderRadius: 6, border: `1px solid ${isActiveCol ? "#b2e8e1" : BORDER}`, background: isActiveCol ? "#e6f7f5" : "#f8f9fb", minWidth: 48 }}>
+                              <span style={{ fontSize: "0.62rem", color: isActiveCol ? TEAL : MUTED, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.03em" }}>{d.label}</span>
+                              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: isLowestInCol ? TEAL : NAVY }}>{fmtPrice(price)}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                    {DOSES.map(d => {
-                      const price = getPrice(p, d.key);
-                      const isActiveCol = allDosesSortKey === d.key;
-                      const isLowestInCol = isActiveCol && price != null && price === lowestByDose[d.key];
-                      return price != null ? (
-                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.82rem", fontWeight: isActiveCol ? 700 : 600, color: isLowestInCol ? TEAL : isActiveCol ? NAVY : "#1a1f2e", background: isActiveCol ? "rgba(15,31,61,0.04)" : "transparent", borderRadius: 4, padding: "2px 0" }}>
-                          {fmtPrice(price)}
-                          {isLowestInCol && <div style={{ fontSize: "0.55rem", fontWeight: 700, color: TEAL, textTransform: "uppercase", letterSpacing: "0.04em" }}>lowest</div>}
-                        </div>
-                      ) : (
-                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", color: BORDER, background: isActiveCol ? "rgba(15,31,61,0.04)" : "transparent" }}>—</div>
-                      );
-                    })}
-                    {ratingEl}
-                    <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
-                      {p.gphc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
-                    </div>
-                    <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
-                      {p.cqc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
-                    </div>
-                    {viewBtn}
                   </div>
                 );
               }
