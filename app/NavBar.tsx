@@ -19,7 +19,6 @@ function LogoIcon() {
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropOpen, setDropOpen] = useState(false);
   const pathname = usePathname();
 
   function navLinkStyle(href: string) {
@@ -45,45 +44,16 @@ export default function NavBar() {
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden sm:flex" style={{ alignItems: "center", gap: 4 }}>
+        <nav className="hidden sm:flex" style={{ alignItems: "center", gap: 2, marginLeft: "auto" }}>
           <a href="/" style={navLinkStyle("/")}>Home</a>
-
-          {/* Medications dropdown */}
-          <div
-            style={{ position: "relative" }}
-            onMouseEnter={() => setDropOpen(true)}
-            onMouseLeave={() => setDropOpen(false)}
-          >
-            <a
-              href="/mounjaro"
-              style={{ ...navLinkStyle("/mounjaro"), display: "flex", alignItems: "center", gap: 4 }}
-            >
-              Medications <span style={{ fontSize: "0.7rem", marginTop: 1 }}>▾</span>
-            </a>
-            {dropOpen && (
-              <div style={{ position: "absolute", top: "100%", left: 0, background: "#fff", border: "1.5px solid #e2e6ef", borderRadius: 10, boxShadow: "0 4px 16px rgba(15,31,61,0.10)", minWidth: 180, overflow: "hidden", zIndex: 200 }}>
-                <a
-                  href="/mounjaro"
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", fontSize: "0.86rem", color: "#1a1f2e", textDecoration: "none", borderBottom: "1px solid #e2e6ef" }}
-                >
-                  Mounjaro
-                  <span style={{ fontSize: "0.65rem", fontWeight: 600, padding: "2px 6px", borderRadius: 10, marginLeft: "auto", background: "#e6f7f5", color: "#0e9f8a", border: "1px solid #b2e8e1" }}>Live</span>
-                </a>
-                <a
-                  href="/wegovy"
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", fontSize: "0.86rem", color: "#1a1f2e", textDecoration: "none" }}
-                >
-                  Wegovy
-                  <span style={{ fontSize: "0.65rem", fontWeight: 600, padding: "2px 6px", borderRadius: 10, marginLeft: "auto", background: "#eef0f6", color: "#6b7280", border: "1px solid #e2e6ef" }}>Soon</span>
-                </a>
-              </div>
-            )}
-          </div>
-
+          <a href="/mounjaro" style={{ ...navLinkStyle("/mounjaro"), display: "flex", alignItems: "center", gap: 5 }}>
+            Mounjaro
+            <span style={{ fontSize: "0.62rem", fontWeight: 600, letterSpacing: "0.04em", padding: "1px 6px", borderRadius: 10, background: "#e6f7f5", color: "#0e9f8a", border: "1px solid #b2e8e1" }}>Live</span>
+          </a>
           <a href="/about" style={navLinkStyle("/about")}>About</a>
           <a
             href="/contact"
-            style={{ fontSize: "0.88rem", fontWeight: 500, background: "#0e9f8a", color: "white", textDecoration: "none", padding: "6px 14px", borderRadius: 8, marginLeft: 6 }}
+            style={{ fontSize: "0.88rem", fontWeight: 500, background: "#0e9f8a", color: "white", textDecoration: "none", padding: "6px 14px", borderRadius: 8, marginLeft: 4 }}
           >
             Contact
           </a>

@@ -99,9 +99,9 @@ export default function MounjaroPage() {
       <NavBar />
 
       {/* Hero */}
-      <section style={{ background: "linear-gradient(160deg, #0f1f3d 0%, #1a3260 60%, #1e4d8c 100%)", color: "white", padding: "56px 24px 64px", position: "relative", overflow: "hidden" }}>
+      <section style={{ background: "linear-gradient(160deg, #0f1f3d 0%, #1a3260 60%, #1e4d8c 100%)", color: "white", padding: "56px 0 64px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 80% 50%, rgba(14,159,138,0.18) 0%, transparent 60%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: 1140, margin: "0 auto", position: "relative" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 24px", position: "relative" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(14,159,138,0.18)", border: "1px solid rgba(14,159,138,0.35)", color: "#7de8d8", fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
             Mounjaro · tirzepatide
           </div>
