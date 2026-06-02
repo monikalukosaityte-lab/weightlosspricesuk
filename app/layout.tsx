@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Compare Weight Loss Medication Prices UK | WeightLossPricesUK",
   description: "Compare weight loss medication prices across UK-registered online providers. Updated daily.",
   metadataBase: new URL("https://www.weightlosspricesuk.co.uk"),
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: false },
   icons: { icon: "/weightlosspricesuk-favicon.svg" },
 };
 
