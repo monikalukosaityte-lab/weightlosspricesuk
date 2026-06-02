@@ -167,8 +167,8 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         </div>
 
         {/* Filters */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.04em" }}>Filter:</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, overflowX: "auto", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
+          <span style={{ fontSize: "0.75rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.04em", flexShrink: 0 }}>Filter:</span>
           {[
             { key: "cqc", label: "CQC registered" },
             { key: "sub", label: "Subscription" },
@@ -192,6 +192,8 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                   cursor: "pointer",
                   transition: "all 0.15s",
                   fontFamily: "inherit",
+                  flexShrink: 0,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {f.label}
@@ -203,7 +205,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
               <div style={{ width: 1, height: 18, background: BORDER }} />
               <button
                 onClick={() => setCurrentDose("all")}
-                style={{ fontSize: "0.78rem", fontWeight: 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid ${BORDER}`, background: "#ffffff", color: MUTED, cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit" }}
+                style={{ fontSize: "0.78rem", fontWeight: 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid ${BORDER}`, background: "#ffffff", color: MUTED, cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit", flexShrink: 0, whiteSpace: "nowrap" }}
               >
                 All doses →
               </button>
@@ -212,7 +214,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
           <div style={{ width: 1, height: 18, background: BORDER }} />
           <button
             onClick={() => setActiveFilters(new Set())}
-            style={{ fontSize: "0.75rem", color: MUTED, background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6, fontFamily: "inherit" }}
+            style={{ fontSize: "0.75rem", color: MUTED, background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6, fontFamily: "inherit", flexShrink: 0, whiteSpace: "nowrap" }}
           >
             Clear all
           </button>
