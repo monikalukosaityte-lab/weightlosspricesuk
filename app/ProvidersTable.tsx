@@ -88,6 +88,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
     if (activeFilters.has("klarna") && !p.klarna) return false;
     if (activeFilters.has("paypal") && !p.paypal_pay3) return false;
     if (activeFilters.has("highrated") && (p.review_stars == null || p.review_stars < 4.5)) return false;
+    if (activeFilters.has("all_doses") && !DOSES.every(d => getPrice(p, d.key) != null)) return false;
     return true;
   });
 
@@ -175,6 +176,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
             { key: "klarna", label: "Klarna" },
             { key: "paypal", label: "PayPal" },
             { key: "highrated", label: "4.5+ stars" },
+            ...(!isAllDoses ? [{ key: "all_doses", label: "All doses" }] : []),
           ].map(f => {
             const active = activeFilters.has(f.key);
             return (
