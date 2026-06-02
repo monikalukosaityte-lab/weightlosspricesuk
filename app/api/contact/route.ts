@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
 
   try {
     await transporter.sendMail({
-      from: `"WeightLossPricesUK Contact" <${process.env.ZOHO_EMAIL}>`,
-      to: process.env.ZOHO_EMAIL,
+      from: `"WeightLossPricesUK Contact" <contact@weightlosspricesuk.co.uk>`,
+      to: "contact@weightlosspricesuk.co.uk",
       replyTo: email,
       subject: `[Contact Form] ${reason}`,
       text: [

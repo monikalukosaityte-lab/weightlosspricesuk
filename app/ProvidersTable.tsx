@@ -1,7 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import type { Provider } from "./page";
+export interface Provider {
+  name: string;
+  brand_url: string | null;
+  url: string | null;
+  trustpilot_url: string | null;
+  price_2_5: number | null;
+  price_5: number | null;
+  price_7_5: number | null;
+  price_10: number | null;
+  price_12_5: number | null;
+  price_15: number | null;
+  discounts: string | null;
+  delivery_price: number | null;
+  next_day_delivery: boolean | null;
+  click_and_collect: boolean | null;
+  review_stars: number | null;
+  review_count: number | null;
+  classification: string | null;
+  subscription: boolean | null;
+  saving_plans: boolean | null;
+  bundles: boolean | null;
+  klarna: boolean | null;
+  paypal_pay3: boolean | null;
+  gphc_number: string | null;
+  gphc_registered: boolean | null;
+  cqc_registered: boolean | null;
+  cqc_rating: string | null;
+  confidence: string | null;
+}
 
 type ProviderWithLogo = Provider & { logo: string | null };
 
