@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+body {
+  background: #F4F8FD;
+  color: #1a2940;
+}
+
+.btn-view {
+  background-color: #2F7FD4;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  display: inline-block;
+  transition: background-color 0.15s;
+}
+.btn-view:hover {
+  background-color: #2571bc;
+}
