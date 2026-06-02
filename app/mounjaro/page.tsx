@@ -130,40 +130,7 @@ export default function MounjaroPage() {
         </div>
       </section>
 
-      {/* Table */}
-      <div style={{ maxWidth: 1140, margin: "0 auto", padding: "32px 24px 0", width: "100%" }}>
-        <ProvidersTable providers={providers} />
-        <p style={{ fontSize: "0.75rem", color: "#9ca3af", marginTop: 16, lineHeight: 1.6 }}>
-          Prices shown are collected from publicly available information and are for indicative purposes only.
-          They may be out of date, incomplete, or subject to change without notice. We do not guarantee the
-          accuracy of any pricing listed. Always visit the provider&apos;s website directly to confirm current
-          prices, eligibility criteria, and full terms before making any purchasing decision.
-          WeightLossPricesUK is not affiliated with any provider listed.
-        </p>
-      </div>
-
-      {/* Info cards */}
-      <section style={{ maxWidth: 1140, margin: "32px auto 64px", padding: "0 24px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20, width: "100%" }}>
-        {[
-          {
-            title: "What is Mounjaro?",
-            body: "Mounjaro (tirzepatide) is a weekly injection approved in the UK for weight management. It works by mimicking two hormones that regulate appetite and blood sugar.",
-          },
-          {
-            title: "How do I choose a provider?",
-            body: "Look for GPhC-registered pharmacies or CQC-registered clinics. Compare price, delivery speed, and support options. Always confirm eligibility directly with the provider.",
-          },
-          {
-            title: "Is it safe to buy online?",
-            body: "Yes, if the provider is registered with the CQC and their prescribers are GMC-registered. All providers listed here are GPhC-registered pharmacies or CQC-registered clinics.",
-          },
-        ].map(card => (
-          <div key={card.title} style={{ background: "#fff", border: "1.5px solid #e2e6ef", borderRadius: 14, padding: 24, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
-            <h2 style={{ fontFamily: SERIF, fontSize: "1.05rem", fontWeight: 400, color: "#0f1f3d", marginBottom: 10 }}>{card.title}</h2>
-            <p style={{ fontSize: "0.85rem", color: "#6b7280", lineHeight: 1.65, margin: 0 }}>{card.body}</p>
-          </div>
-        ))}
-      </section>
+      <ProvidersTable providers={providers} lastUpdated={lastUpdated} />
 
       <Footer />
     </div>

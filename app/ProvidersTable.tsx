@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 export interface Provider {
   name: string;
   brand_url: string | null;
@@ -31,342 +32,351 @@ export interface Provider {
   confidence: string | null;
 }
 
-type ProviderWithLogo = Provider & { logo: string | null };
+export type ProviderWithLogo = Provider & { logo: string | null };
 
-const DOSES = [
+type DoseKey = "price_2_5" | "price_5" | "price_7_5" | "price_10" | "price_12_5" | "price_15";
+
+const DOSES: { key: DoseKey; label: string }[] = [
   { key: "price_2_5",  label: "2.5mg" },
   { key: "price_5",    label: "5mg" },
   { key: "price_7_5",  label: "7.5mg" },
   { key: "price_10",   label: "10mg" },
   { key: "price_12_5", label: "12.5mg" },
   { key: "price_15",   label: "15mg" },
-] as const;
-
-const FILTER_GROUPS = [
-  {
-    label: "Dose",
-    filters: DOSES.map(d => ({ key: d.key, label: d.label })),
-  },
-  {
-    label: "Compliance",
-    filters: [
-      { key: "gphc", label: "GPhC" },
-      { key: "cqc",  label: "CQC" },
-    ],
-  },
-  {
-    label: "Plans",
-    filters: [
-      { key: "sub",          label: "Sub" },
-      { key: "bundles",      label: "Bundles" },
-      { key: "saving_plans", label: "Saving Plans" },
-    ],
-  },
-  {
-    label: "Payments",
-    filters: [
-      { key: "klarna", label: "Klarna" },
-      { key: "paypal", label: "PayPal" },
-    ],
-  },
-  {
-    label: "Offers",
-    filters: [
-      { key: "has_discount", label: "Has discount" },
-      { key: "stars_4_5",    label: "4.5+ ★" },
-    ],
-  },
 ];
 
-function Bool({ val }: { val: boolean | null }) {
-  if (val === true)  return <span className="font-medium" style={{ color: '#1A7A4A' }}>✓</span>;
-  if (val === false) return <span style={{ color: '#D1D5DB' }}>✗</span>;
-  return <span style={{ color: '#D1D5DB' }}>—</span>;
+function getPrice(p: Provider, key: DoseKey): number | null {
+  const val = p[key];
+  return typeof val === "number" ? val : null;
 }
 
-function CqcBadge({ registered, rating }: { registered: boolean | null; rating: string | null }) {
-  if (!registered && !rating) return <span style={{ color: '#D1D5DB' }}>—</span>;
-  if (rating === "Outstanding")          return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#e6f7f5', color: '#0e9f8a' }}>Outstanding</span>;
-  if (rating === "Good")                 return <span className="font-medium" style={{ color: '#1A7A4A' }} title="CQC Good">✓</span>;
-  if (rating === "Requires Improvement") return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#F3F4F6', color: '#6B7280' }}>Req. Improv.</span>;
-  if (rating === "Inadequate")           return <span className="px-1 py-0.5 rounded text-[10px] font-semibold" style={{ background: '#F3F4F6', color: '#6B7280' }}>Inadequate</span>;
-  return <span className="font-medium" style={{ color: '#1A7A4A' }} title="CQC registered">✓</span>;
+function fmtPrice(price: number): string {
+  return price % 1 === 0 ? `£${price}` : `£${price.toFixed(2)}`;
 }
 
-const stickyColShadow = "shadow-[2px_0_6px_-1px_rgba(0,0,0,0.08)]";
+function initials(name: string): string {
+  return name.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase();
+}
 
-export default function ProvidersTable({ providers }: { providers: ProviderWithLogo[] }) {
-  const [sortDose, setSortDose] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
+const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
+
+const TEAL = "#0e9f8a";
+const NAVY = "#0f1f3d";
+const MUTED = "#6b7280";
+const BORDER = "#e2e6ef";
+
+export default function ProvidersTable({ providers, lastUpdated }: { providers: ProviderWithLogo[]; lastUpdated: string }) {
+  const [currentDose, setCurrentDose] = useState<string>("2.5mg");
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
 
   function toggleFilter(key: string) {
     setActiveFilters(prev => {
       const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
+      if (next.has(key)) next.delete(key); else next.add(key);
       return next;
     });
   }
 
-  const sorted = [...providers].sort((a, b) => {
-    if (!sortDose) return a.name.localeCompare(b.name);
-    const av = a[sortDose as keyof Provider] as number | null;
-    const bv = b[sortDose as keyof Provider] as number | null;
-    if (av == null && bv == null) return 0;
-    if (av == null) return 1;
-    if (bv == null) return -1;
-    return av - bv;
-  });
+  const currentKey = DOSES.find(d => d.label === currentDose)?.key ?? null;
 
-  const filtered = sorted.filter(p => {
-    if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
-    if (activeFilters.has("gphc") && !p.gphc_registered && !p.gphc_number) return false;
+  let rows = providers.filter(p => {
+    if (currentKey && getPrice(p, currentKey) == null) return false;
     if (activeFilters.has("cqc") && !p.cqc_registered) return false;
     if (activeFilters.has("sub") && !p.subscription) return false;
-    if (activeFilters.has("bundles") && !p.bundles) return false;
-    if (activeFilters.has("saving_plans") && !p.saving_plans) return false;
     if (activeFilters.has("klarna") && !p.klarna) return false;
     if (activeFilters.has("paypal") && !p.paypal_pay3) return false;
-    if (activeFilters.has("has_discount") && !p.discounts) return false;
-    if (activeFilters.has("stars_4_5") && (p.review_stars == null || p.review_stars < 4.5)) return false;
-    for (const dose of DOSES) {
-      if (activeFilters.has(dose.key) && p[dose.key as keyof Provider] == null) return false;
-    }
+    if (activeFilters.has("highrated") && (p.review_stars == null || p.review_stars < 4.5)) return false;
     return true;
   });
 
-  const cheapestByDose: Record<string, number> = {};
-  for (const d of DOSES) {
-    const vals = providers
-      .map(p => p[d.key as keyof Provider] as number | null)
-      .filter((v): v is number => v != null);
-    if (vals.length) cheapestByDose[d.key] = Math.min(...vals);
-  }
+  rows = [...rows].sort((a, b) => {
+    const aKey = currentKey ?? "price_2_5";
+    const bKey = currentKey ?? "price_2_5";
+    return (getPrice(a, aKey) ?? 9999) - (getPrice(b, bKey) ?? 9999);
+  });
 
-  const hasActiveFilters = search.length > 0 || activeFilters.size > 0;
+  const lowestPrice = currentKey && rows.length > 0 ? getPrice(rows[0], currentKey) : null;
+
+  const isAllDoses = currentDose === "all";
 
   return (
-    <div>
-      {/* Filter bar */}
-      <div className="bg-white border border-gray-200 rounded-xl p-3 mb-4 shadow-sm space-y-2">
-        <input
-          type="text"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search provider…"
-          className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none"
-        />
-        {FILTER_GROUPS.map(group => (
-          <div key={group.label} className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[10px] text-gray-400 font-medium flex-shrink-0" style={{ minWidth: '52px' }}>{group.label}</span>
-            {group.filters.map(f => {
-              const active = activeFilters.has(f.key);
+    <>
+      {/* Sticky dose bar */}
+      <div style={{ background: "#ffffff", borderBottom: `1px solid ${BORDER}`, position: "sticky", top: 64, zIndex: 150, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 24px", height: 52, display: "flex", alignItems: "center", gap: 16, overflowX: "auto", scrollbarWidth: "none" } as React.CSSProperties}>
+          <span style={{ fontSize: "0.78rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap", flexShrink: 0 }}>Your dose:</span>
+          <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+            {["all", ...DOSES.map(d => d.label)].map(dose => {
+              const active = currentDose === dose;
               return (
                 <button
-                  key={f.key}
-                  onClick={() => toggleFilter(f.key)}
-                  className="rounded-full font-medium border transition-colors"
+                  key={dose}
+                  onClick={() => setCurrentDose(dose)}
                   style={{
-                    fontSize: '11px',
-                    padding: '2px 8px',
-                    ...(active
-                      ? { backgroundColor: '#0e9f8a', color: '#ffffff', borderColor: '#0e9f8a' }
-                      : { backgroundColor: '#ffffff', color: '#6B7280', borderColor: '#E5E7EB' })
+                    fontSize: "0.82rem",
+                    fontWeight: active ? 600 : 500,
+                    padding: "5px 14px",
+                    borderRadius: 20,
+                    border: `1.5px solid ${active ? TEAL : BORDER}`,
+                    background: active ? TEAL : "#ffffff",
+                    color: active ? "white" : MUTED,
+                    cursor: "pointer",
+                    transition: "all 0.15s",
+                    whiteSpace: "nowrap",
+                    fontFamily: "inherit",
                   }}
                 >
-                  {f.label}
+                  {dose === "all" ? "All doses" : dose}
                 </button>
               );
             })}
           </div>
-        ))}
-        {hasActiveFilters && (
+          <div style={{ width: 1, height: 24, background: BORDER, flexShrink: 0 }} />
+          <span style={{ fontSize: "0.8rem", color: MUTED, whiteSpace: "nowrap", flexShrink: 0 }}>
+            Showing prices for <strong>{currentDose === "all" ? "all doses" : currentDose}</strong>
+          </span>
+        </div>
+      </div>
+
+      <main style={{ maxWidth: 1140, margin: "0 auto", padding: "28px 24px 80px" }}>
+
+        {/* Explainer strip */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
+          {[
+            { dot: TEAL, label: "GPhC", desc: "General Pharmaceutical Council — the UK pharmacy regulator. All listed providers must be registered." },
+            { dot: "#4338ca", label: "CQC", desc: "Care Quality Commission — regulates clinics and healthcare services. An extra layer of oversight." },
+            { dot: "#92580a", label: "Sub", desc: "Subscription available — may reduce your monthly cost. Always check the cancellation terms." },
+          ].map(item => (
+            <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: 10, background: "#ffffff", border: `1px solid ${BORDER}`, borderRadius: 8, padding: "10px 14px", fontSize: "0.8rem", flex: 1, minWidth: 180, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: item.dot, flexShrink: 0, marginTop: 3 }} />
+              <div>
+                <strong style={{ color: NAVY, fontSize: "0.82rem" }}>{item.label} </strong>
+                <span style={{ color: MUTED, lineHeight: 1.4 }}>{item.desc}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Filters */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.75rem", fontWeight: 600, color: MUTED, textTransform: "uppercase", letterSpacing: "0.04em" }}>Filter:</span>
+          {[
+            { key: "cqc", label: "CQC registered" },
+            { key: "sub", label: "Subscription" },
+            { key: "klarna", label: "Klarna" },
+            { key: "paypal", label: "PayPal" },
+            { key: "highrated", label: "4.5+ stars" },
+          ].map(f => {
+            const active = activeFilters.has(f.key);
+            return (
+              <button
+                key={f.key}
+                onClick={() => toggleFilter(f.key)}
+                style={{
+                  fontSize: "0.78rem",
+                  fontWeight: active ? 600 : 500,
+                  padding: "4px 12px",
+                  borderRadius: 20,
+                  border: `1.5px solid ${active ? "#b2e8e1" : BORDER}`,
+                  background: active ? "#e6f7f5" : "#ffffff",
+                  color: active ? TEAL : MUTED,
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                  fontFamily: "inherit",
+                }}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+          <div style={{ width: 1, height: 18, background: BORDER }} />
           <button
-            onClick={() => { setSearch(""); setActiveFilters(new Set()); }}
-            className="text-xs underline"
-            style={{ color: '#9CA3AF' }}
+            onClick={() => setActiveFilters(new Set())}
+            style={{ fontSize: "0.75rem", color: MUTED, background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6, fontFamily: "inherit" }}
           >
             Clear all
           </button>
-        )}
-      </div>
-
-      {/* Sort pills */}
-      <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-gray-500 font-medium">Sort by dose:</span>
-          {DOSES.map(d => (
-            <button
-              key={d.key}
-              onClick={() => setSortDose(d.key)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors border ${
-                sortDose === d.key
-                  ? "bg-[#0e9f8a] text-white border-[#0e9f8a]"
-                  : "bg-white text-gray-600 border-gray-200 hover:bg-[#e6f7f5]"
-              }`}
-            >
-              {d.label}
-            </button>
-          ))}
         </div>
-        <span className="text-xs text-gray-400">
-          {filtered.length} of {providers.length} providers
-          <span className="md:inline hidden ml-1">· swipe to see all columns →</span>
-        </span>
-      </div>
 
-      <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-        <table className="text-xs md:text-sm" style={{ borderCollapse: "collapse", minWidth: "900px" }}>
-          <thead>
-            <tr className="bg-[#0f1f3d] border-b border-[#1a3260] text-xs text-blue-200 uppercase tracking-wider">
-              <th className="sticky left-0 z-20 bg-[#0f1f3d] text-left px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]" style={{ width: '110px', maxWidth: '110px' }}></th>
-              <th colSpan={6} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Prices / monthly pack</th>
-              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Reviews</th>
-              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Provider Details</th>
-              <th colSpan={3} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Plans</th>
-              <th colSpan={2} className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Payments</th>
-              <th className="text-center px-2 py-2 md:px-4 md:py-3 font-semibold border-r border-[#1a3260]">Discounts</th>
-              <th className="px-2 py-2 md:px-4 md:py-3 bg-[#0f1f3d]"></th>
-            </tr>
-            <tr className="border-b border-[#1a3260] text-xs text-white bg-[#0f1f3d]">
-              <th className={`sticky left-0 top-0 z-30 bg-[#0f1f3d] border-r border-[#1a3260] px-2 py-1.5 md:px-4 md:py-2.5 text-left font-semibold text-white ${stickyColShadow}`} style={{ width: '110px', maxWidth: '110px' }}>
-                Provider
-              </th>
-              {DOSES.map(d => (
-                <th
-                  key={d.key}
-                  onClick={() => setSortDose(d.key)}
-                  className={`sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white cursor-pointer hover:bg-[#0f1f3d] transition-colors whitespace-nowrap ${
-                    sortDose === d.key ? "underline decoration-dotted" : ""
-                  }`}
-                >
-                  {d.label} {sortDose === d.key ? "↑" : ""}
-                </th>
-              ))}
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-l border-[#1a3260]">Stars</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">Reviews</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">GPhC</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">CQC</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">Sub</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">Bundles</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">Longer Plans</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white">Klarna</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">PayPal</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 font-medium bg-[#0f1f3d] text-white border-r border-[#1a3260]">Code / offer</th>
-              <th className="sticky top-0 z-10 px-2 py-1.5 md:px-4 md:py-2.5 bg-[#0f1f3d]"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
-              <tr>
-                <td colSpan={18} className="px-4 py-10 text-center text-sm text-gray-400">
-                  No providers match your filters.{" "}
-                  <button onClick={() => { setSearch(""); setActiveFilters(new Set()); }} className="underline">Clear filters</button>
-                </td>
-              </tr>
-            ) : filtered.map((p) => {
-              const isCheapest = p.price_2_5 != null && p.price_2_5 === cheapestByDose["price_2_5"];
-              const rowBg = isCheapest ? "bg-gray-50 hover:bg-gray-100" : "hover:bg-gray-50";
-              const stickyBg = isCheapest ? "bg-gray-50" : "bg-white";
+        {/* Table meta */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+          <span style={{ fontSize: "0.82rem", color: MUTED }}>
+            <strong style={{ color: NAVY }}>{rows.length}</strong> providers
+          </span>
+          <span style={{ fontSize: "0.75rem", color: MUTED, display: "flex", alignItems: "center", gap: 5 }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: TEAL, display: "inline-block" }} />
+            Updated {lastUpdated}
+          </span>
+        </div>
 
-              return (
-                <tr key={p.name} className={`border-b border-gray-100 transition-colors ${rowBg}`}>
-                  <td className={`sticky left-0 z-10 ${stickyBg} px-2 py-2 md:px-4 md:py-3 border-r border-gray-200 ${stickyColShadow}`}>
-                    <div className="flex items-center gap-2">
-                      {p.logo ? (
-                        <img src={p.logo} alt={p.name} className="w-5 h-5 md:w-8 md:h-8 object-contain rounded flex-shrink-0" />
-                      ) : (
-                        <div className="w-5 h-5 md:w-8 md:h-8 rounded bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400 flex-shrink-0">
-                          {p.name.charAt(0)}
-                        </div>
-                      )}
-                      <div className="min-w-0">
-                        <div className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2">
-                          {p.url
-                            ? <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#0e9f8a]">{p.name}</a>
-                            : <span>{p.name}</span>
-                          }
-                        </div>
-                        {isCheapest && (
-                          <div className="mt-0.5">
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap border" style={{ background: '#e6f7f5', color: '#0e9f8a', borderColor: '#b2e8e1' }}>Lowest</span>
-                          </div>
-                        )}
+        {/* Table */}
+        <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", borderRadius: 14 } as React.CSSProperties}>
+          {isAllDoses && (
+            <div style={{ fontSize: "0.75rem", color: MUTED, textAlign: "center", padding: "6px 0 8px", letterSpacing: "0.03em" }}>
+              ← Swipe to see all doses →
+            </div>
+          )}
+          <div style={{
+            background: "#ffffff",
+            border: `1.5px solid ${BORDER}`,
+            borderRadius: 14,
+            overflow: "hidden",
+            boxShadow: "0 1px 3px rgba(15,31,61,0.07)",
+            minWidth: isAllDoses ? 1060 : 600,
+          }}>
+            {/* Header */}
+            {isAllDoses ? (
+              <div style={{ display: "grid", gridTemplateColumns: "160px repeat(6, 85px) 100px 55px 55px 90px", alignItems: "center", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
+                <div>Provider</div>
+                {DOSES.map(d => <div key={d.key} style={{ textAlign: "center", fontSize: "0.68rem" }}>{d.label}</div>)}
+                <div>Rating</div>
+                <div style={{ textAlign: "center" }}>GPhC</div>
+                <div style={{ textAlign: "center" }}>CQC</div>
+                <div />
+              </div>
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 80px 80px 80px 100px", alignItems: "center", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 8 }}>
+                <div>Provider</div>
+                <div>Price / mo</div>
+                <div>Rating</div>
+                <div style={{ textAlign: "center" }}>GPhC</div>
+                <div style={{ textAlign: "center" }}>CQC</div>
+                <div style={{ textAlign: "center" }}>Sub</div>
+                <div />
+              </div>
+            )}
+
+            {/* Rows */}
+            {rows.length === 0 ? (
+              <div style={{ padding: "40px 20px", textAlign: "center", fontSize: "0.875rem", color: MUTED }}>
+                No providers match your filters.{" "}
+                <button onClick={() => setActiveFilters(new Set())} style={{ color: TEAL, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontFamily: "inherit" }}>
+                  Clear filters
+                </button>
+              </div>
+            ) : rows.map((p, i) => {
+              const isLowest = !isAllDoses && currentKey != null && lowestPrice != null && getPrice(p, currentKey) === lowestPrice;
+              const viewUrl = p.url ?? p.brand_url ?? "#";
+              const rowStyle: React.CSSProperties = {
+                borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none",
+                padding: "14px 20px",
+                gap: 8,
+                display: "grid",
+              };
+
+              const logoEl = p.logo ? (
+                <img src={p.logo} alt={p.name} style={{ width: 36, height: 36, borderRadius: 8, border: `1px solid ${BORDER}`, objectFit: "contain", background: "white", padding: 3, flexShrink: 0 }} />
+              ) : (
+                <div style={{ width: 36, height: 36, borderRadius: 8, border: `1px solid ${BORDER}`, background: "#eef0f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", fontWeight: 700, color: MUTED, flexShrink: 0 }}>
+                  {initials(p.name)}
+                </div>
+              );
+
+              const tagsEl = (
+                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                  {p.gphc_registered && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#e6f7f5", color: "#0a6b5a" }}>GPhC</span>}
+                  {p.cqc_registered && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#eef0ff", color: "#4338ca" }}>CQC</span>}
+                  {p.subscription && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#fff7e0", color: "#92580a" }}>Sub</span>}
+                </div>
+              );
+
+              const ratingEl = p.review_stars ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span style={{ fontSize: "0.85rem", color: NAVY, fontWeight: 600 }}>★ {p.review_stars.toFixed(1)}</span>
+                  <span style={{ fontSize: "0.7rem", color: MUTED }}>{p.review_count?.toLocaleString()} reviews</span>
+                </div>
+              ) : <span style={{ fontSize: "0.8rem", color: BORDER }}>—</span>;
+
+              const viewBtn = (
+                <div style={{ textAlign: "right" }}>
+                  <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 5, background: NAVY, color: "white", fontSize: "0.75rem", fontWeight: 600, padding: "6px 14px", borderRadius: 6, textDecoration: "none", whiteSpace: "nowrap" }}>
+                    View →
+                  </a>
+                </div>
+              );
+
+              if (isAllDoses) {
+                return (
+                  <div key={p.name} style={{ ...rowStyle, gridTemplateColumns: "160px repeat(6, 85px) 100px 55px 55px 90px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      {logoEl}
+                      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                        <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.82rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
+                        {tagsEl}
                       </div>
                     </div>
-                  </td>
+                    {DOSES.map(d => {
+                      const price = getPrice(p, d.key);
+                      return price != null ? (
+                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.82rem", fontWeight: 600, color: "#1a1f2e" }}>{fmtPrice(price)}</div>
+                      ) : (
+                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", color: BORDER }}>—</div>
+                      );
+                    })}
+                    {ratingEl}
+                    <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
+                      {p.gphc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
+                    </div>
+                    <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
+                      {p.cqc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
+                    </div>
+                    {viewBtn}
+                  </div>
+                );
+              }
 
-                  {DOSES.map(d => {
-                    const val = p[d.key as keyof Provider] as number | null;
-                    const isCheapestDose = val != null && val === cheapestByDose[d.key];
-                    return (
-                      <td
-                        key={d.key}
-                        className={`px-2 py-2 md:px-4 md:py-3 text-center whitespace-nowrap font-medium ${
-                          isCheapestDose ? "text-gray-900 font-bold" : "text-gray-700"
-                        }`}
-                      >
-                        {val != null ? `£${val}` : <span className="text-gray-300">—</span>}
-                      </td>
-                    );
-                  })}
-
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center whitespace-nowrap border-l border-gray-100" style={{ color: '#F59E0B' }}>
-                    {p.review_stars != null ? `★ ${p.review_stars}` : <span style={{ color: '#D1D5DB' }}>—</span>}
-                  </td>
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center border-r border-gray-100 whitespace-nowrap">
-                    {p.review_count != null ? (
-                      p.trustpilot_url
-                        ? <a href={p.trustpilot_url} target="_blank" rel="noopener noreferrer" className="text-gray-700 underline decoration-dotted hover:text-[#0e9f8a]">{p.review_count.toLocaleString()}</a>
-                        : <span className="text-gray-700">{p.review_count.toLocaleString()}</span>
-                    ) : <span className="text-gray-300">—</span>}
-                  </td>
-
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center">
-                    {p.gphc_number
-                      ? <span className="font-medium" style={{ color: '#1A7A4A' }} title={`GPhC: ${p.gphc_number}`}>✓</span>
-                      : <Bool val={p.gphc_registered} />
-                    }
-                  </td>
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center border-r border-gray-100">
-                    <CqcBadge registered={p.cqc_registered} rating={p.cqc_rating} />
-                  </td>
-
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center"><Bool val={p.subscription} /></td>
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center"><Bool val={p.bundles} /></td>
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center border-r border-gray-100"><Bool val={p.saving_plans} /></td>
-
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center"><Bool val={p.klarna} /></td>
-                  <td className="px-2 py-2 md:px-4 md:py-3 text-center border-r border-gray-100"><Bool val={p.paypal_pay3} /></td>
-
-                  <td className="px-2 py-2 md:px-4 md:py-3 border-r border-gray-100 max-w-[180px]">
-                    {p.discounts ? (
-                      <span className="text-xs line-clamp-2 text-gray-600" title={p.discounts}>{p.discounts}</span>
-                    ) : (
-                      <span className="block text-center" style={{ color: '#D1D5DB' }}>—</span>
-                    )}
-                  </td>
-
-                  <td className="px-2 py-2 md:px-4 md:py-3">
-                    {(p.url || p.brand_url) && (
-                      <a
-                        href={(p.url || p.brand_url)!}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors border"
-                        style={{ backgroundColor: 'white', color: '#0f1f3d', borderColor: '#d1d5db' }}
-                      >
-                        View →
-                      </a>
-                    )}
-                  </td>
-                </tr>
+              const price = currentKey ? getPrice(p, currentKey) : null;
+              return (
+                <div key={p.name} style={{ ...rowStyle, gridTemplateColumns: "2fr 1fr 1fr 80px 80px 80px 100px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    {logoEl}
+                    <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.88rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
+                        {isLowest && <span style={{ fontSize: "0.62rem", fontWeight: 700, background: TEAL, color: "white", padding: "2px 6px", borderRadius: 10 }}>Lowest</span>}
+                      </div>
+                      {tagsEl}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: "0.95rem", fontWeight: 600, color: isLowest ? TEAL : "#1a1f2e" }}>
+                    {price != null ? fmtPrice(price) : <span style={{ color: BORDER, fontSize: "0.8rem" }}>—</span>}
+                  </div>
+                  {ratingEl}
+                  <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
+                    {p.gphc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
+                  </div>
+                  <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
+                    {p.cqc_registered ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
+                  </div>
+                  <div style={{ textAlign: "center", fontSize: "0.85rem" }}>
+                    {p.subscription ? <span style={{ color: TEAL, fontWeight: 600 }}>✓</span> : <span style={{ color: BORDER }}>—</span>}
+                  </div>
+                  {viewBtn}
+                </div>
               );
             })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </div>
+        </div>
+
+        {/* Disclaimer */}
+        <div style={{ background: "#ffffff", borderLeft: `4px solid ${TEAL}`, padding: "14px 20px", marginTop: 28, display: "flex", alignItems: "flex-start", gap: 12, fontSize: "0.8rem", color: MUTED, lineHeight: 1.55 }}>
+          <span style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: TEAL, flexShrink: 0, marginTop: 1 }}>Important</span>
+          <span>Prices are for informational purposes only and may change at any time. Always visit the provider&apos;s website directly to confirm current pricing and eligibility before purchasing. This is not medical advice — always consult a qualified healthcare professional before starting any medication.</span>
+        </div>
+
+        {/* Info cards */}
+        <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+          <div style={{ background: "#ffffff", border: `1.5px solid ${BORDER}`, borderRadius: 14, padding: 24, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
+            <h3 style={{ fontFamily: SERIF, fontSize: "1.1rem", fontWeight: 400, color: NAVY, marginBottom: 10, marginTop: 0 }}>What is Mounjaro?</h3>
+            <p style={{ fontSize: "0.85rem", color: MUTED, lineHeight: 1.7, margin: 0 }}>Mounjaro (tirzepatide) is a weekly injection approved in the UK for weight management. It works by mimicking two hormones — GIP and GLP-1 — that regulate appetite and blood sugar. Available in doses from 2.5mg up to 15mg.</p>
+          </div>
+          <div style={{ background: "#ffffff", border: `1.5px solid ${BORDER}`, borderRadius: 14, padding: 24, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
+            <h3 style={{ fontFamily: SERIF, fontSize: "1.1rem", fontWeight: 400, color: NAVY, marginBottom: 10, marginTop: 0 }}>How to choose a provider</h3>
+            <p style={{ fontSize: "0.85rem", color: MUTED, lineHeight: 1.7, margin: 0 }}>Always look for GPhC-registered pharmacies or CQC-registered clinics. Compare the price at your current dose and your likely long-term dose — they can differ significantly. Check Trustpilot reviews and confirm delivery times directly with the provider.</p>
+          </div>
+        </div>
+
+      </main>
+    </>
   );
 }
