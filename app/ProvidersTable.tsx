@@ -245,19 +245,34 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         )}
 
         {/* Table */}
-        <div style={{ borderRadius: 14 }}>
+        <div style={{ overflowX: isAllDoses ? "auto" : "visible", WebkitOverflowScrolling: "touch", borderRadius: 14 } as React.CSSProperties}>
+          {isAllDoses && (
+            <p style={{ fontSize: "0.72rem", color: MUTED, marginBottom: 6, marginTop: 0 }}>← Swipe to see all doses →</p>
+          )}
           <div style={{
             background: "#ffffff",
             border: `1.5px solid ${BORDER}`,
             borderRadius: 14,
             overflow: "hidden",
             boxShadow: "0 1px 3px rgba(15,31,61,0.07)",
+            minWidth: isAllDoses ? 700 : 0,
           }}>
             {/* Header */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              <div>Provider</div>
-              {!isAllDoses && <div>Price / mo</div>}
-            </div>
+            {isAllDoses ? (
+              <div style={{ display: "grid", gridTemplateColumns: "180px repeat(6, 80px) 90px", alignItems: "center", padding: "10px 16px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 6 }}>
+                <div>Provider</div>
+                {DOSES.map(d => {
+                  const isActive = allDosesSortKey === d.key;
+                  return <div key={d.key} style={{ textAlign: "center", color: isActive ? "#7de8d8" : undefined }}>{d.label}{isActive ? " ↑" : ""}</div>;
+                })}
+                <div />
+              </div>
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <div>Provider</div>
+                <div>Price / mo</div>
+              </div>
+            )}
 
             {/* Rows */}
             {rows.length === 0 ? (
@@ -310,34 +325,27 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
 
               if (isAllDoses) {
                 return (
-                  <div key={p.name} style={{ display: "flex", alignItems: "flex-start", gap: 12, borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none", padding: "14px 20px" }}>
-                    {logoEl}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
-                        <div>
-                          <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.88rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
-                          <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap", alignItems: "center" }}>
-                            {tagsEl}
-                            {p.review_stars && <span style={{ fontSize: "0.72rem", color: MUTED }}>★ {p.review_stars.toFixed(1)}</span>}
-                          </div>
-                        </div>
-                        {viewBtn}
-                      </div>
-                      <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
-                        {DOSES.map(d => {
-                          const price = getPrice(p, d.key);
-                          if (price == null) return null;
-                          const isActiveCol = allDosesSortKey === d.key;
-                          const isLowestInCol = price === lowestByDose[d.key];
-                          return (
-                            <div key={d.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "4px 8px", borderRadius: 6, border: `1px solid ${isActiveCol ? "#b2e8e1" : BORDER}`, background: isActiveCol ? "#e6f7f5" : "#f8f9fb", minWidth: 48 }}>
-                              <span style={{ fontSize: "0.62rem", color: isActiveCol ? TEAL : MUTED, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.03em" }}>{d.label}</span>
-                              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: isLowestInCol ? TEAL : NAVY }}>{fmtPrice(price)}</span>
-                            </div>
-                          );
-                        })}
+                  <div key={p.name} style={{ display: "grid", gridTemplateColumns: "180px repeat(6, 80px) 90px", alignItems: "center", gap: 6, padding: "12px 16px", borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      {logoEl}
+                      <div>
+                        <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
+                        {tagsEl}
                       </div>
                     </div>
+                    {DOSES.map(d => {
+                      const price = getPrice(p, d.key);
+                      const isActiveCol = allDosesSortKey === d.key;
+                      const isLowestInCol = price != null && price === lowestByDose[d.key];
+                      return price != null ? (
+                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", fontWeight: isActiveCol ? 700 : 600, color: isLowestInCol ? TEAL : isActiveCol ? NAVY : "#1a1f2e", background: isActiveCol ? "rgba(15,31,61,0.04)" : "transparent", borderRadius: 4, padding: "2px 0" }}>
+                          {fmtPrice(price)}
+                        </div>
+                      ) : (
+                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", color: BORDER }}>—</div>
+                      );
+                    })}
+                    {viewBtn}
                   </div>
                 );
               }
