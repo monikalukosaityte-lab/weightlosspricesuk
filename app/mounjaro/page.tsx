@@ -1,6 +1,8 @@
 import { readFileSync, statSync } from "fs";
 import { join } from "path";
 import ProvidersTable, { type Provider } from "../ProvidersTable";
+
+export const dynamic = "force-dynamic";
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 
