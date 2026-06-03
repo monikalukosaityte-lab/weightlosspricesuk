@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased ${dmSans.variable} ${dmSerif.variable}`}>
       <body className="min-h-full flex flex-col">{children}</body>
+      <GoogleAnalytics gaId="G-FEGTEDF6T4" />
     </html>
   );
 }
