@@ -245,7 +245,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         )}
 
         {/* Table */}
-        <div style={{ overflowX: isAllDoses ? "auto" : "visible", WebkitOverflowScrolling: "touch", borderRadius: 14 } as React.CSSProperties}>
+        <div style={{ overflowX: isAllDoses ? "auto" : "visible", WebkitOverflowScrolling: "touch", borderRadius: 14, width: "100%", maxWidth: "100%" } as React.CSSProperties}>
           {isAllDoses && (
             <p style={{ fontSize: "0.72rem", color: MUTED, marginBottom: 6, marginTop: 0 }}>← Swipe to see all doses →</p>
           )}

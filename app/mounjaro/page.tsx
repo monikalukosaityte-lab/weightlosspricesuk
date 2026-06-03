@@ -95,7 +95,7 @@ export default function MounjaroPage() {
     .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8f9fb", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: "#f8f9fb", display: "flex", flexDirection: "column", overflowX: "hidden" }}>
       <NavBar />
 
       {/* Hero */}
