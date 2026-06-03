@@ -244,38 +244,83 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
           </div>
         )}
 
-        {/* Table */}
-        <div style={{ overflowX: isAllDoses ? "auto" : "visible", WebkitOverflowScrolling: "touch", borderRadius: 14, width: "100%", maxWidth: "100%" } as React.CSSProperties}>
-          {isAllDoses && (
-            <p style={{ fontSize: "0.72rem", color: MUTED, marginBottom: 6, marginTop: 0 }}>← Swipe to see all doses →</p>
-          )}
-          <div style={{
-            background: "#ffffff",
-            border: `1.5px solid ${BORDER}`,
-            borderRadius: 14,
-            overflow: "hidden",
-            boxShadow: "0 1px 3px rgba(15,31,61,0.07)",
-            minWidth: isAllDoses ? 700 : 0,
-          }}>
-            {/* Header */}
-            {isAllDoses ? (
-              <div style={{ display: "grid", gridTemplateColumns: "180px repeat(6, 80px) 90px", alignItems: "center", padding: "10px 16px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", gap: 6 }}>
-                <div>Provider</div>
-                {DOSES.map(d => {
-                  const isActive = allDosesSortKey === d.key;
-                  return <div key={d.key} style={{ textAlign: "center", color: isActive ? "#7de8d8" : undefined }}>{d.label}{isActive ? " ↑" : ""}</div>;
+        {/* All-doses table — sticky provider column, price columns scroll */}
+        {isAllDoses && (
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", borderRadius: 14, border: `1.5px solid ${BORDER}`, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" } as React.CSSProperties}>
+            <table style={{ borderCollapse: "separate", borderSpacing: 0, width: "100%", minWidth: 520, fontSize: "0.82rem" }}>
+              <thead>
+                <tr style={{ background: NAVY }}>
+                  <th style={{ position: "sticky", left: 0, zIndex: 2, background: NAVY, padding: "10px 16px", textAlign: "left", fontWeight: 600, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "rgba(255,255,255,0.65)", whiteSpace: "nowrap", minWidth: 140, borderRight: `1px solid rgba(255,255,255,0.1)` }}>Provider</th>
+                  {DOSES.map(d => {
+                    const isActive = allDosesSortKey === d.key;
+                    return (
+                      <th key={d.key} style={{ padding: "10px 12px", textAlign: "center", fontWeight: 600, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", color: isActive ? "#7de8d8" : "rgba(255,255,255,0.65)", whiteSpace: "nowrap", minWidth: 72 }}>
+                        {d.label}{isActive ? " ↑" : ""}
+                      </th>
+                    );
+                  })}
+                  <th style={{ padding: "10px 12px", minWidth: 80 }} />
+                </tr>
+              </thead>
+              <tbody>
+                {rows.length === 0 ? (
+                  <tr><td colSpan={9} style={{ padding: "40px 20px", textAlign: "center", color: MUTED }}>
+                    No providers match your filters.{" "}
+                    <button onClick={() => setActiveFilters(new Set())} style={{ color: TEAL, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontFamily: "inherit" }}>Clear filters</button>
+                  </td></tr>
+                ) : rows.map((p, i) => {
+                  const viewUrl = p.url ?? p.brand_url ?? "#";
+                  const rowBg = i % 2 === 0 ? "#ffffff" : "#fafbfc";
+                  const borderB = i < rows.length - 1 ? `1px solid ${BORDER}` : "none";
+                  const logoEl = p.logo ? (
+                    <img src={p.logo} alt={p.name} style={{ width: 32, height: 32, borderRadius: 6, border: `1px solid ${BORDER}`, objectFit: "contain", background: "white", padding: 2, flexShrink: 0 }} />
+                  ) : (
+                    <div style={{ width: 32, height: 32, borderRadius: 6, border: `1px solid ${BORDER}`, background: "#eef0f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.6rem", fontWeight: 700, color: MUTED, flexShrink: 0 }}>{initials(p.name)}</div>
+                  );
+                  return (
+                    <tr key={p.name}>
+                      <td style={{ position: "sticky", left: 0, zIndex: 1, background: rowBg, borderBottom: borderB, borderRight: `1px solid ${BORDER}`, padding: "10px 12px 10px 16px", whiteSpace: "nowrap" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          {logoEl}
+                          <div>
+                            <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.82rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
+                            <div style={{ display: "flex", gap: 3, marginTop: 3, flexWrap: "wrap" }}>
+                              {p.gphc_registered && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#e6f7f5", color: "#0a6b5a" }}>GPhC</span>}
+                              {p.cqc_registered && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#eef0ff", color: "#4338ca" }}>CQC</span>}
+                              {p.subscription && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#fff7e0", color: "#92580a" }}>Sub</span>}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      {DOSES.map(d => {
+                        const price = getPrice(p, d.key);
+                        const isActiveCol = allDosesSortKey === d.key;
+                        const isLowestInCol = price != null && price === lowestByDose[d.key];
+                        return (
+                          <td key={d.key} style={{ textAlign: "center", padding: "10px 8px", borderBottom: borderB, background: isActiveCol ? "rgba(15,31,61,0.03)" : rowBg, fontWeight: isLowestInCol ? 700 : 500, color: isLowestInCol ? TEAL : NAVY, whiteSpace: "nowrap" }}>
+                            {price != null ? fmtPrice(price) : <span style={{ color: BORDER }}>—</span>}
+                          </td>
+                        );
+                      })}
+                      <td style={{ padding: "10px 12px", borderBottom: borderB, textAlign: "right", background: rowBg, whiteSpace: "nowrap" }}>
+                        <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 4, background: NAVY, color: "white", fontSize: "0.72rem", fontWeight: 600, padding: "5px 12px", borderRadius: 6, textDecoration: "none" }}>View →</a>
+                      </td>
+                    </tr>
+                  );
                 })}
-                <div />
-              </div>
-            ) : (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                <div>Provider</div>
-                <div>Price / mo</div>
-              </div>
-            )}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-            {/* Rows */}
-            {rows.length === 0 ? (
+        {/* Single-dose table */}
+        {!isAllDoses && (
+          <div style={{ borderRadius: 14, border: `1.5px solid ${BORDER}`, overflow: "hidden", boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", background: NAVY, color: "rgba(255,255,255,0.65)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div>Provider</div>
+              <div>Price / mo</div>
+            </div>
+        {rows.length === 0 ? (
               <div style={{ padding: "40px 20px", textAlign: "center", fontSize: "0.875rem", color: MUTED }}>
                 No providers match your filters.{" "}
                 <button onClick={() => setActiveFilters(new Set())} style={{ color: TEAL, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontFamily: "inherit" }}>
@@ -283,14 +328,8 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                 </button>
               </div>
             ) : rows.map((p, i) => {
-              const isLowest = !isAllDoses && currentKey != null && lowestPrice != null && getPrice(p, currentKey) === lowestPrice;
+              const isLowest = currentKey != null && lowestPrice != null && getPrice(p, currentKey) === lowestPrice;
               const viewUrl = p.url ?? p.brand_url ?? "#";
-              const rowStyle: React.CSSProperties = {
-                borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none",
-                padding: "14px 20px",
-                gap: 8,
-                display: "grid",
-              };
 
               const logoEl = p.logo ? (
                 <img src={p.logo} alt={p.name} style={{ width: 36, height: 36, borderRadius: 8, border: `1px solid ${BORDER}`, objectFit: "contain", background: "white", padding: 3, flexShrink: 0 }} />
@@ -308,13 +347,6 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                 </div>
               );
 
-              const ratingEl = p.review_stars ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  <span style={{ fontSize: "0.85rem", color: NAVY, fontWeight: 600 }}>★ {p.review_stars.toFixed(1)}</span>
-                  <span style={{ fontSize: "0.7rem", color: MUTED }}>{p.review_count?.toLocaleString()} reviews</span>
-                </div>
-              ) : <span style={{ fontSize: "0.8rem", color: BORDER }}>—</span>;
-
               const viewBtn = (
                 <div style={{ textAlign: "right" }}>
                   <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 5, background: NAVY, color: "white", fontSize: "0.75rem", fontWeight: 600, padding: "6px 14px", borderRadius: 6, textDecoration: "none", whiteSpace: "nowrap" }}>
@@ -323,37 +355,9 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                 </div>
               );
 
-              if (isAllDoses) {
-                return (
-                  <div key={p.name} style={{ display: "grid", gridTemplateColumns: "180px repeat(6, 80px) 90px", alignItems: "center", gap: 6, padding: "12px 16px", borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      {logoEl}
-                      <div>
-                        <a href={viewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", fontWeight: 600, color: NAVY, textDecoration: "none" }}>{p.name}</a>
-                        {tagsEl}
-                      </div>
-                    </div>
-                    {DOSES.map(d => {
-                      const price = getPrice(p, d.key);
-                      const isActiveCol = allDosesSortKey === d.key;
-                      const isLowestInCol = price != null && price === lowestByDose[d.key];
-                      return price != null ? (
-                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", fontWeight: isActiveCol ? 700 : 600, color: isLowestInCol ? TEAL : isActiveCol ? NAVY : "#1a1f2e", background: isActiveCol ? "rgba(15,31,61,0.04)" : "transparent", borderRadius: 4, padding: "2px 0" }}>
-                          {fmtPrice(price)}
-                        </div>
-                      ) : (
-                        <div key={d.key} style={{ textAlign: "center", fontSize: "0.8rem", color: BORDER }}>—</div>
-                      );
-                    })}
-                    {viewBtn}
-                  </div>
-                );
-              }
-
               const price = currentKey ? getPrice(p, currentKey) : null;
               return (
                 <div key={p.name} style={{ display: "flex", alignItems: "center", gap: 12, borderBottom: i < rows.length - 1 ? `1px solid ${BORDER}` : "none", padding: "14px 20px" }}>
-                  {/* Provider */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
                     {logoEl}
                     <div style={{ minWidth: 0 }}>
@@ -367,7 +371,6 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                       </div>
                     </div>
                   </div>
-                  {/* Price + View */}
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, flexShrink: 0 }}>
                     <div style={{ fontSize: "1.05rem", fontWeight: 700, color: isLowest ? TEAL : NAVY }}>
                       {price != null ? fmtPrice(price) : <span style={{ color: BORDER, fontSize: "0.85rem" }}>—</span>}
@@ -378,7 +381,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
               );
             })}
           </div>
-        </div>
+        )}
 
         {/* Disclaimer */}
         <div style={{ background: "#ffffff", borderLeft: `4px solid ${TEAL}`, padding: "14px 20px", marginTop: 28, display: "flex", alignItems: "flex-start", gap: 12, fontSize: "0.8rem", color: MUTED, lineHeight: 1.55 }}>
