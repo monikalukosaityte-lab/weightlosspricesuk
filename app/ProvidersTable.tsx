@@ -246,11 +246,11 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
 
         {/* All-doses table — sticky provider column, price columns scroll */}
         {isAllDoses && (
-          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", borderRadius: 14, border: `1.5px solid ${BORDER}`, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" } as React.CSSProperties}>
-            <table style={{ borderCollapse: "separate", borderSpacing: 0, width: "100%", minWidth: 520, fontSize: "0.82rem" }}>
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginLeft: -24, marginRight: -24 } as React.CSSProperties}>
+            <table style={{ borderCollapse: "separate", borderSpacing: 0, width: "100%", minWidth: 480, fontSize: "0.82rem" }}>
               <thead>
                 <tr style={{ background: NAVY }}>
-                  <th style={{ position: "sticky", left: 0, zIndex: 2, background: NAVY, padding: "10px 16px", textAlign: "left", fontWeight: 600, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "rgba(255,255,255,0.65)", whiteSpace: "nowrap", minWidth: 140, borderRight: `1px solid rgba(255,255,255,0.1)` }}>Provider</th>
+                  <th style={{ position: "sticky", left: 0, zIndex: 2, background: NAVY, padding: "10px 16px 10px 24px", textAlign: "left", fontWeight: 600, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "rgba(255,255,255,0.65)", whiteSpace: "nowrap", minWidth: 140, borderRight: `1px solid rgba(255,255,255,0.1)` }}>Provider</th>
                   {DOSES.map(d => {
                     const isActive = allDosesSortKey === d.key;
                     return (
@@ -279,7 +279,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                   );
                   return (
                     <tr key={p.name}>
-                      <td style={{ position: "sticky", left: 0, zIndex: 1, background: rowBg, borderBottom: borderB, borderRight: `1px solid ${BORDER}`, padding: "10px 12px 10px 16px", whiteSpace: "nowrap" }}>
+                      <td style={{ position: "sticky", left: 0, zIndex: 1, background: rowBg, borderBottom: borderB, borderRight: `1px solid ${BORDER}`, padding: "10px 12px 10px 24px", whiteSpace: "nowrap" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                           {logoEl}
                           <div>

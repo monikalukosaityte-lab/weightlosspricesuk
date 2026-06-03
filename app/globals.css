@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-html, body {
-  overflow-x: hidden;
-  max-width: 100%;
-}
 
 :root {
   --color-navy:        #0f1f3d;
