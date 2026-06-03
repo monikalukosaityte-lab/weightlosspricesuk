@@ -25,6 +25,7 @@ export interface Provider {
   bundles: boolean | null;
   klarna: boolean | null;
   paypal_pay3: boolean | null;
+  clearpay: boolean | null;
   gphc_number: string | null;
   gphc_registered: boolean | null;
   cqc_registered: boolean | null;
@@ -87,6 +88,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
     if (activeFilters.has("sub") && !p.subscription) return false;
     if (activeFilters.has("klarna") && !p.klarna) return false;
     if (activeFilters.has("paypal") && !p.paypal_pay3) return false;
+    if (activeFilters.has("clearpay") && !p.clearpay) return false;
     if (activeFilters.has("highrated") && (p.review_stars == null || p.review_stars < 4.5)) return false;
     return true;
   });
@@ -143,7 +145,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         </div>
       </div>
 
-      <main style={{ maxWidth: 1140, margin: "0 auto", padding: "28px 24px 80px" }}>
+      <main style={{ width: "100%", maxWidth: 1140, margin: "0 auto", padding: "28px 24px 80px", boxSizing: "border-box" }}>
 
         {/* Explainer strip */}
         <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
@@ -169,7 +171,8 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
             { key: "cqc", label: "CQC registered" },
             { key: "sub", label: "Subscription" },
             { key: "klarna", label: "Klarna" },
-            { key: "paypal", label: "PayPal" },
+            { key: "paypal", label: "PayPal Pay in 3" },
+            { key: "clearpay", label: "Clearpay" },
             { key: "highrated", label: "4.5+ stars" },
           ].map(f => {
             const active = activeFilters.has(f.key);
@@ -288,6 +291,9 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                               {p.gphc_registered && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#e6f7f5", color: "#0a6b5a" }}>GPhC</span>}
                               {p.cqc_registered && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#eef0ff", color: "#4338ca" }}>CQC</span>}
                               {p.subscription && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#fff7e0", color: "#92580a" }}>Sub</span>}
+                              {p.klarna && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#ffffff", color: MUTED, border: `1px solid ${BORDER}` }}>Klarna</span>}
+                              {p.paypal_pay3 && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#ffffff", color: MUTED, border: `1px solid ${BORDER}` }}>PayPal Pay in 3</span>}
+                              {p.clearpay && <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "1px 5px", borderRadius: 8, background: "#ffffff", color: MUTED, border: `1px solid ${BORDER}` }}>Clearpay</span>}
                             </div>
                           </div>
                         </div>
@@ -344,6 +350,9 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                   {p.gphc_registered && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#e6f7f5", color: "#0a6b5a" }}>GPhC</span>}
                   {p.cqc_registered && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#eef0ff", color: "#4338ca" }}>CQC</span>}
                   {p.subscription && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#fff7e0", color: "#92580a" }}>Sub</span>}
+                  {p.klarna && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#ffffff", color: MUTED, border: `1px solid ${BORDER}` }}>Klarna</span>}
+                  {p.paypal_pay3 && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#ffffff", color: MUTED, border: `1px solid ${BORDER}` }}>PayPal Pay in 3</span>}
+                  {p.clearpay && <span style={{ fontSize: "0.62rem", fontWeight: 600, padding: "1px 6px", borderRadius: 10, background: "#ffffff", color: MUTED, border: `1px solid ${BORDER}` }}>Clearpay</span>}
                 </div>
               );
 
