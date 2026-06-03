@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  overflow-x: clip;
+}
+
 :root {
   --color-navy:        #0f1f3d;
   --color-navy-mid:    #1a3260;
