@@ -87,7 +87,7 @@ function loadProviders(): { providers: (Provider & { logo: string | null })[]; l
   const dateStr = Array.isArray(parsed) ? null : parsed.last_updated;
   const lastUpdated = dateStr
     ? new Date(dateStr).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
-    : "—";
+    : "-";
   return {
     providers: data.map((p) => ({ ...p, logo: LOGOS[p.name] ? `/logos/${LOGOS[p.name]}` : null })),
     lastUpdated,
@@ -114,7 +114,7 @@ export default function MounjaroPage() {
             Compare Mounjaro prices <span style={{ color: "#7de8d8" }}>across the UK</span>
           </h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", maxWidth: 520, lineHeight: 1.6, marginBottom: 36 }}>
-            See what {providers.length} UK-registered providers are charging across all doses &ndash; updated daily.
+            See what {providers.length} UK-registered providers are charging across all doses - updated daily.
           </p>
           <div style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>

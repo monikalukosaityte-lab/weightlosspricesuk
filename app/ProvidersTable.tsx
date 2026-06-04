@@ -150,9 +150,9 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         {/* Explainer strip */}
         <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
           {[
-            { dot: TEAL, label: "GPhC", desc: "General Pharmaceutical Council — the UK pharmacy regulator. All listed providers must be registered." },
-            { dot: "#4338ca", label: "CQC", desc: "Care Quality Commission — regulates clinics and healthcare services. An extra layer of oversight." },
-            { dot: "#92580a", label: "Sub", desc: "Subscription available — may reduce your monthly cost. Always check the cancellation terms." },
+            { dot: TEAL, label: "GPhC", desc: "General Pharmaceutical Council - the UK pharmacy regulator. All listed providers must be registered." },
+            { dot: "#4338ca", label: "CQC", desc: "Care Quality Commission - regulates clinics and healthcare services. An extra layer of oversight." },
+            { dot: "#92580a", label: "Sub", desc: "Subscription available - may reduce your monthly cost. Always check the cancellation terms." },
           ].map(item => (
             <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: 10, background: "#ffffff", border: `1px solid ${BORDER}`, borderRadius: 8, padding: "10px 14px", fontSize: "0.8rem", flex: 1, minWidth: 180, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
               <div style={{ width: 10, height: 10, borderRadius: "50%", background: item.dot, flexShrink: 0, marginTop: 3 }} />
@@ -304,7 +304,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                         const isLowestInCol = price != null && price === lowestByDose[d.key];
                         return (
                           <td key={d.key} style={{ textAlign: "center", padding: "10px 8px", borderBottom: borderB, background: isActiveCol ? "rgba(15,31,61,0.03)" : rowBg, fontWeight: isLowestInCol ? 700 : 500, color: isLowestInCol ? TEAL : NAVY, whiteSpace: "nowrap" }}>
-                            {price != null ? fmtPrice(price) : <span style={{ color: BORDER }}>—</span>}
+                            {price != null ? fmtPrice(price) : <span style={{ color: BORDER }}>-</span>}
                           </td>
                         );
                       })}
@@ -382,7 +382,7 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, flexShrink: 0 }}>
                     <div style={{ fontSize: "1.05rem", fontWeight: 700, color: isLowest ? TEAL : NAVY }}>
-                      {price != null ? fmtPrice(price) : <span style={{ color: BORDER, fontSize: "0.85rem" }}>—</span>}
+                      {price != null ? fmtPrice(price) : <span style={{ color: BORDER, fontSize: "0.85rem" }}>-</span>}
                     </div>
                     {viewBtn}
                   </div>
@@ -395,18 +395,18 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
         {/* Disclaimer */}
         <div style={{ background: "#ffffff", borderLeft: `4px solid ${TEAL}`, padding: "14px 20px", marginTop: 28, display: "flex", alignItems: "flex-start", gap: 12, fontSize: "0.8rem", color: MUTED, lineHeight: 1.55 }}>
           <span style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: TEAL, flexShrink: 0, marginTop: 1 }}>Important</span>
-          <span>Prices are for informational purposes only and may change at any time. Always visit the provider&apos;s website directly to confirm current pricing and eligibility before purchasing. This is not medical advice — always consult a qualified healthcare professional before starting any medication.</span>
+          <span>Prices are for informational purposes only and may change at any time. Always visit the provider&apos;s website directly to confirm current pricing and eligibility before purchasing. This is not medical advice - always consult a qualified healthcare professional before starting any medication.</span>
         </div>
 
         {/* Info cards */}
         <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
           <div style={{ background: "#ffffff", border: `1.5px solid ${BORDER}`, borderRadius: 14, padding: 24, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
             <h3 style={{ fontFamily: SERIF, fontSize: "1.1rem", fontWeight: 400, color: NAVY, marginBottom: 10, marginTop: 0 }}>What is Mounjaro?</h3>
-            <p style={{ fontSize: "0.85rem", color: MUTED, lineHeight: 1.7, margin: 0 }}>Mounjaro (tirzepatide) is a weekly injection approved in the UK for weight management. It works by mimicking two hormones — GIP and GLP-1 — that regulate appetite and blood sugar. Available in doses from 2.5mg up to 15mg.</p>
+            <p style={{ fontSize: "0.85rem", color: MUTED, lineHeight: 1.7, margin: 0 }}>Mounjaro (tirzepatide) is a weekly injection approved in the UK for weight management. It works by mimicking two hormones (GIP and GLP-1) that regulate appetite and blood sugar. Available in doses from 2.5mg up to 15mg.</p>
           </div>
           <div style={{ background: "#ffffff", border: `1.5px solid ${BORDER}`, borderRadius: 14, padding: 24, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
             <h3 style={{ fontFamily: SERIF, fontSize: "1.1rem", fontWeight: 400, color: NAVY, marginBottom: 10, marginTop: 0 }}>How to choose a provider</h3>
-            <p style={{ fontSize: "0.85rem", color: MUTED, lineHeight: 1.7, margin: 0 }}>Always look for GPhC-registered pharmacies or CQC-registered clinics. Compare the price at your current dose and your likely long-term dose — they can differ significantly. Check Trustpilot reviews and confirm delivery times directly with the provider.</p>
+            <p style={{ fontSize: "0.85rem", color: MUTED, lineHeight: 1.7, margin: 0 }}>Always look for GPhC-registered pharmacies or CQC-registered clinics. Compare the price at your current dose and your likely long-term dose, as they can differ significantly. Check Trustpilot reviews and confirm delivery times directly with the provider.</p>
           </div>
         </div>
 

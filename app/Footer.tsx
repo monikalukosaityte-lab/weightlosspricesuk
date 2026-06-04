@@ -54,7 +54,7 @@ export default function Footer() {
 
         {/* Disclaimer */}
         <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", lineHeight: 1.6, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.07)", marginTop: 20, marginBottom: 0 }}>
-          Prices shown are for informational purposes only and may change at any time &ndash; always visit the
+          Prices shown are for informational purposes only and may change at any time. Always visit the
           provider&apos;s website directly to confirm current pricing and eligibility. WeightLossPricesUK does not
           provide medical advice. Always consult a qualified healthcare professional before starting any weight
           loss medication.

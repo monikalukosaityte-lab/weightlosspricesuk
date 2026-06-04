@@ -16,7 +16,7 @@ function loadStats() {
   const dateStr = Array.isArray(parsed) ? null : parsed.last_updated;
   const lastUpdated = dateStr
     ? new Date(dateStr).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
-    : "—";
+    : "-";
   return { count: providers.length, cheapest, lastUpdated };
 }
 
@@ -40,7 +40,7 @@ export default function HomePage() {
             <span style={{ color: "#7de8d8" }}>across the UK</span>
           </h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", maxWidth: 520, lineHeight: 1.6, marginBottom: 40 }}>
-            See what UK-registered online providers are charging for Mounjaro and Wegovy &ndash; all in one place, updated daily.
+            See what UK-registered online providers are charging for Mounjaro and Wegovy - all in one place, updated daily.
           </p>
           <div style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -81,7 +81,7 @@ export default function HomePage() {
         {/* Disclaimer */}
         <div style={{ background: "#fff", borderLeft: "4px solid #0e9f8a", padding: "14px 20px", fontSize: "0.8rem", color: "#6b7280", display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 56, lineHeight: 1.55 }}>
           <span style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "#0e9f8a", flexShrink: 0, marginTop: 1 }}>Important</span>
-          <span>Prices are for informational purposes only and may be out of date or subject to change. Always visit the provider&apos;s website to confirm current pricing. This is not medical advice &ndash; consult a qualified healthcare professional before starting any medication.</span>
+          <span>Prices are for informational purposes only and may be out of date or subject to change. Always visit the provider&apos;s website to confirm current pricing. This is not medical advice - consult a qualified healthcare professional before starting any medication.</span>
         </div>
 
         {/* How it works */}

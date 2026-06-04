@@ -31,10 +31,10 @@ export default function AboutPage() {
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "#0e9f8a" }} />
           <div style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#0e9f8a", marginBottom: 12 }}>Our mission</div>
           <p style={{ fontSize: "1.05rem", color: "#1a1f2e", lineHeight: 1.75, fontWeight: 300, margin: 0 }}>
-            The UK weight loss medication market has exploded. There are now dozens of online providers &ndash; each with different prices, different dose options, different subscription models, and different small print. It&apos;s genuinely confusing, even for people who know what they&apos;re looking for.
+            The UK weight loss medication market has exploded. There are now dozens of online providers - each with different prices, different dose options, different subscription models, and different small print. It&apos;s genuinely confusing, even for people who know what they&apos;re looking for.
           </p>
           <p style={{ fontSize: "1.05rem", color: "#1a1f2e", lineHeight: 1.75, fontWeight: 300, marginTop: 14, marginBottom: 0 }}>
-            We built WeightLossPricesUK because we felt people deserved a simple, honest place to see what things actually cost &ndash; before committing to anything. Not after the first invoice arrives.
+            We built WeightLossPricesUK because we felt people deserved a simple, honest place to see what things actually cost - before committing to anything. Not after the first invoice arrives.
           </p>
         </div>
 
@@ -42,7 +42,7 @@ export default function AboutPage() {
         <section style={{ marginBottom: 40 }}>
           <h2 style={{ fontFamily: SERIF, fontSize: "1.4rem", fontWeight: 400, color: "#0f1f3d", marginBottom: 14 }}>The problem we&apos;re solving</h2>
           <p style={{ fontSize: "0.92rem", color: "#6b7280", lineHeight: 1.75, marginBottom: 12 }}>
-            The price you see advertised is not always the price you&apos;ll pay long term. Many providers offer attractive first-order discounts to get you through the door &ndash; but once you move to your second or third month, the price can increase significantly.
+            The price you see advertised is not always the price you&apos;ll pay long term. Many providers offer attractive first-order discounts to get you through the door - but once you move to your second or third month, the price can increase significantly.
           </p>
           <p style={{ fontSize: "0.92rem", color: "#6b7280", lineHeight: 1.75, marginBottom: 20 }}>
             On top of that, some providers charge differently depending on your dose, whether you subscribe, or whether you pay upfront. Without comparing them side by side, it&apos;s almost impossible to know if you&apos;re getting a fair deal.
@@ -50,7 +50,7 @@ export default function AboutPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
             {[
               { title: "Introductory pricing", body: "Many providers heavily discount your first order. The real ongoing cost can be much higher." },
-              { title: "Dose price jumps", body: "As your dose increases over time, so does the price &ndash; sometimes by £100+ per month." },
+              { title: "Dose price jumps", body: "As your dose increases over time, so does the price - sometimes by £100+ per month." },
               { title: "Subscription lock-in", body: "Some plans look cheaper but require long-term commitments with cancellation restrictions." },
             ].map(card => (
               <div key={card.title} style={{ background: "#fff", border: "1.5px solid #e2e6ef", borderRadius: 8, padding: 20, boxShadow: "0 1px 3px rgba(15,31,61,0.07)" }}>
@@ -65,10 +65,10 @@ export default function AboutPage() {
         <section style={{ marginBottom: 40 }}>
           <h2 style={{ fontFamily: SERIF, fontSize: "1.4rem", fontWeight: 400, color: "#0f1f3d", marginBottom: 14 }}>What we do</h2>
           <p style={{ fontSize: "0.92rem", color: "#6b7280", lineHeight: 1.75, marginBottom: 12 }}>
-            We collect publicly available pricing from UK-registered online providers and display it in one place, updated daily. We show prices across all available doses so you can compare like for like &ndash; not just the cheapest headline figure.
+            We collect publicly available pricing from UK-registered online providers and display it in one place, updated daily. We show prices across all available doses so you can compare like for like - not just the cheapest headline figure.
           </p>
           <p style={{ fontSize: "0.92rem", color: "#6b7280", lineHeight: 1.75, margin: 0 }}>
-            We also show you which providers are GPhC-registered, CQC-registered, their Trustpilot ratings, and what payment options they accept &ndash; so you have the full picture before you click through.
+            We also show you which providers are GPhC-registered, CQC-registered, their Trustpilot ratings, and what payment options they accept - so you have the full picture before you click through.
           </p>
         </section>
 
@@ -94,7 +94,7 @@ export default function AboutPage() {
         <section style={{ marginBottom: 40 }}>
           <h2 style={{ fontFamily: SERIF, fontSize: "1.4rem", fontWeight: 400, color: "#0f1f3d", marginBottom: 14 }}>Our independence</h2>
           <p style={{ fontSize: "0.92rem", color: "#6b7280", lineHeight: 1.75, margin: 0 }}>
-            Rankings and listings on this site are based purely on data &ndash; price, dose availability, and provider completeness. No provider pays us to appear higher or be featured. That independence is something we take seriously, because the moment that changes, the site stops being useful to you.
+            Rankings and listings on this site are based purely on data - price, dose availability, and provider completeness. No provider pays us to appear higher or be featured. That independence is something we take seriously, because the moment that changes, the site stops being useful to you.
           </p>
         </section>
 

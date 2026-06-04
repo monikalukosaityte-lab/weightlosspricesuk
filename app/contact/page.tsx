@@ -78,7 +78,7 @@ export default function ContactPage() {
             This form is for provider listing enquiries only.
           </p>
           <p style={{ fontSize: "0.85rem", color: "#0a6b5a", lineHeight: 1.6, marginBottom: 8 }}>
-            We are a price comparison website &ndash; not a clinic, pharmacy, or medication provider. We cannot answer questions about treatment, dosage, side effects, or suitability.
+            We are a price comparison website - not a clinic, pharmacy, or medication provider. We cannot answer questions about treatment, dosage, side effects, or suitability.
           </p>
           <p style={{ fontSize: "0.85rem", color: "#0a6b5a", lineHeight: 1.6, margin: 0 }}>
             For medical advice, please contact your GP or visit{" "}

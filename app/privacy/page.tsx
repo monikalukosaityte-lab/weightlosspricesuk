@@ -92,13 +92,13 @@ export default function PrivacyPage() {
               ["Restriction", "ask us to limit how we use your data"],
               ["Object", "object to our processing"],
             ].map(([term, desc]) => (
-              <li key={term} style={{ marginBottom: 6 }}><strong>{term}</strong> &ndash; {desc}</li>
+              <li key={term} style={{ marginBottom: 6 }}><strong>{term}</strong> - {desc}</li>
             ))}
           </ul>
           <p style={{ marginBottom: 12 }}>
             To exercise any of these rights, email{" "}
             <a href="mailto:contact@weightlosspricesuk.co.uk" style={{ color: "#0e9f8a" }}>contact@weightlosspricesuk.co.uk</a>.
-            We will respond within 2&ndash;3 working days.
+            We will respond within 2-3 working days.
           </p>
           <p style={{ marginBottom: 14 }}>
             You also have the right to lodge a complaint with the UK&apos;s data protection authority:{" "}

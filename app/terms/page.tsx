@@ -63,7 +63,7 @@ export default function TermsPage() {
 
           <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>6. Intellectual property</h2>
           <p style={{ marginBottom: 14 }}>
-            All content on this site &ndash; including text, layout, design, and data compilations &ndash; is the property of WeightLossPricesUK and is protected by UK copyright law. You may not reproduce, redistribute, or commercially exploit any content from this site without our written permission.
+            All content on this site - including text, layout, design, and data compilations - is the property of WeightLossPricesUK and is protected by UK copyright law. You may not reproduce, redistribute, or commercially exploit any content from this site without our written permission.
           </p>
 
           <h2 style={{ fontFamily: SERIF, fontSize: "1.25rem", fontWeight: 400, color: "#0f1f3d", margin: "36px 0 12px" }}>7. Limitation of liability</h2>
