@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from "fs";
+import { readFileSync } from "fs";
 import { join } from "path";
 import ProvidersTable, { type Provider } from "../ProvidersTable";
 
@@ -80,21 +80,24 @@ const LOGOS: Record<string, string> = {
   "ZAVA": "ZAVA.png",
 };
 
-function loadProviders(): (Provider & { logo: string | null })[] {
+function loadProviders(): { providers: (Provider & { logo: string | null })[]; lastUpdated: string } {
   const raw = readFileSync(join(process.cwd(), "data/providers.json"), "utf-8");
-  const data: Provider[] = JSON.parse(raw);
-  return data.map((p) => ({
-    ...p,
-    logo: LOGOS[p.name] ? `/logos/${LOGOS[p.name]}` : null,
-  }));
+  const parsed = JSON.parse(raw);
+  const data: Provider[] = Array.isArray(parsed) ? parsed : parsed.providers;
+  const dateStr = Array.isArray(parsed) ? null : parsed.last_updated;
+  const lastUpdated = dateStr
+    ? new Date(dateStr).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+    : "—";
+  return {
+    providers: data.map((p) => ({ ...p, logo: LOGOS[p.name] ? `/logos/${LOGOS[p.name]}` : null })),
+    lastUpdated,
+  };
 }
 
 export default function MounjaroPage() {
-  const providers = loadProviders();
+  const { providers, lastUpdated } = loadProviders();
   const withPrice = providers.filter((p) => p.price_2_5 != null);
   const cheapest2_5 = Math.min(...withPrice.map((p) => p.price_2_5!));
-  const lastUpdated = statSync(join(process.cwd(), "data/providers.json")).mtime
-    .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8f9fb", display: "flex", flexDirection: "column" }}>

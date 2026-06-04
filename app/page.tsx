@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from "fs";
+import { readFileSync } from "fs";
 import { join } from "path";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
@@ -9,11 +9,14 @@ const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
 
 function loadStats() {
   const raw = readFileSync(join(process.cwd(), "data/providers.json"), "utf-8");
-  const providers = JSON.parse(raw) as Array<{ price_2_5?: number | null }>;
+  const parsed = JSON.parse(raw);
+  const providers = (Array.isArray(parsed) ? parsed : parsed.providers) as Array<{ price_2_5?: number | null }>;
   const prices = providers.map(p => p.price_2_5).filter((v): v is number => v != null);
   const cheapest = prices.length ? Math.min(...prices) : null;
-  const lastUpdated = statSync(join(process.cwd(), "data/providers.json")).mtime
-    .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  const dateStr = Array.isArray(parsed) ? null : parsed.last_updated;
+  const lastUpdated = dateStr
+    ? new Date(dateStr).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+    : "—";
   return { count: providers.length, cheapest, lastUpdated };
 }
 
