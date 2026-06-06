@@ -209,6 +209,13 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
             </>
           )}
           <div style={{ width: 1, height: 18, background: BORDER }} />
+          <a
+            href="/mounjaro/klarna"
+            style={{ fontSize: "0.78rem", fontWeight: 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid #e8d8ff`, background: "#f9f0ff", color: "#7c3aed", textDecoration: "none", whiteSpace: "nowrap" }}
+          >
+            Klarna →
+          </a>
+          <div style={{ width: 1, height: 18, background: BORDER }} />
           <button
             onClick={() => setActiveFilters(new Set())}
             style={{ fontSize: "0.75rem", color: MUTED, background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6, fontFamily: "inherit" }}
