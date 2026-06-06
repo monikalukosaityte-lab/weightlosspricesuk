@@ -49,7 +49,7 @@ export default function NavBar() {
             Mounjaro
             <span style={{ fontSize: "0.62rem", fontWeight: 600, letterSpacing: "0.04em", padding: "1px 6px", borderRadius: 10, background: "#e6f7f5", color: "#0e9f8a", border: "1px solid #b2e8e1" }}>Live</span>
           </a>
-          <a href="/mounjaro/klarna" style={navLinkStyle("/mounjaro/klarna")}>Mounjaro - Klarna</a>
+          <a href="/mounjaro/klarna" style={navLinkStyle("/mounjaro/klarna")}>Klarna</a>
           <a href="/about" style={navLinkStyle("/about")}>About</a>
           <a
             href="/contact"
@@ -75,7 +75,7 @@ export default function NavBar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="sm:hidden" style={{ borderTop: "1px solid #e2e6ef", background: "#fff", padding: "12px 20px 20px", display: "flex", flexDirection: "column", gap: 4 }}>
-          {([["Mounjaro", "/mounjaro"], ["Mounjaro - Klarna", "/mounjaro/klarna"], ["About", "/about"]] as const).map(([label, href]) => (
+          {([["Mounjaro", "/mounjaro"], ["Klarna", "/mounjaro/klarna"], ["About", "/about"]] as const).map(([label, href]) => (
             <a
               key={href}
               href={href}
