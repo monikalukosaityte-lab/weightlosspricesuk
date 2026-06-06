@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Buy Mounjaro with Klarna UK 2026 | Compare Providers | WeightLossPricesUK",
   description: "Compare UK providers offering Mounjaro with Klarna payment. See prices across all doses from 2.5mg to 15mg. Always confirm Klarna availability directly with the provider.",
+  robots: { index: true, follow: true },
 };
 
 const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
