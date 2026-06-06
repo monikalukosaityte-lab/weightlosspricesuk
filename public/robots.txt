@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /mounjaro
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Disallow: /preview/
+Disallow: /api/
+Disallow: /mounjaro/klarna
+
+Sitemap: https://www.weightlosspricesuk.co.uk/sitemap.xml

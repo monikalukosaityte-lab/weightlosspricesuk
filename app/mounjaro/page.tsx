@@ -1,8 +1,14 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import ProvidersTable, { type Provider } from "../ProvidersTable";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  robots: { index: true, follow: true },
+};
+
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 

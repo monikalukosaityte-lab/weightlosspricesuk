@@ -1,5 +1,10 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  robots: { index: true, follow: true },
+};
 
 const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
 
