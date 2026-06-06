@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  title: "Mounjaro prices in the UK | Compare Mounjaro providers | Updated Daily",
   robots: { index: true, follow: true },
 };
 
