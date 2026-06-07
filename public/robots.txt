@@ -5,6 +5,8 @@ Allow: /about
 Allow: /contact
 Allow: /privacy
 Allow: /terms
+Allow: /mounjaro/klarna
+Allow: /mounjaro/clearpay
 Disallow: /preview/
 Disallow: /api/
 

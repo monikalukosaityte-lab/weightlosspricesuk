@@ -215,6 +215,12 @@ export default function ProvidersTable({ providers, lastUpdated }: { providers: 
           >
             Klarna →
           </a>
+          <a
+            href="/mounjaro/clearpay"
+            style={{ fontSize: "0.78rem", fontWeight: 500, padding: "4px 12px", borderRadius: 20, border: `1.5px solid #a7f3d0`, background: "#e6f9f0", color: "#047857", textDecoration: "none", whiteSpace: "nowrap" }}
+          >
+            Clearpay →
+          </a>
           <div style={{ width: 1, height: 18, background: BORDER }} />
           <button
             onClick={() => setActiveFilters(new Set())}
