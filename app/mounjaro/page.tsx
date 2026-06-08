@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { readFileSync } from "fs";
 import { join } from "path";
 import ProvidersTable, { type Provider } from "../ProvidersTable";
@@ -102,6 +103,8 @@ function loadProviders(): { providers: (Provider & { logo: string | null })[]; l
 }
 
 export default function MounjaroPage() {
+  notFound();
+
   const { providers, lastUpdated } = loadProviders();
   const withPrice = providers.filter((p) => p.price_2_5 != null);
   const cheapest2_5 = Math.min(...withPrice.map((p) => p.price_2_5!));

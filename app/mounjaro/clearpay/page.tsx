@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { type Provider } from "../../ProvidersTable";
@@ -103,6 +104,8 @@ function loadClearpayProviders() {
 }
 
 export default function MounjaroClearpayPage() {
+  notFound();
+
   const { providers, lastUpdated } = loadClearpayProviders();
 
   return (

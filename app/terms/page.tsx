@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import type { Metadata } from "next";
@@ -9,6 +10,8 @@ export const metadata: Metadata = {
 const SERIF = "var(--font-dm-serif, 'DM Serif Display'), Georgia, serif";
 
 export default function TermsPage() {
+  notFound();
+
   return (
     <div style={{ minHeight: "100vh", background: "#f8f9fb", display: "flex", flexDirection: "column" }}>
       <NavBar />
