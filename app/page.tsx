@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { readFileSync } from "fs";
 import { join } from "path";
 import NavBar from "./NavBar";
@@ -26,6 +27,8 @@ function loadStats() {
 }
 
 export default function HomePage() {
+  notFound();
+
   const { count, cheapest, lastUpdated } = loadStats();
 
   return (
